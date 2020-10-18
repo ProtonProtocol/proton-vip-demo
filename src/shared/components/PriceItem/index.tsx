@@ -82,7 +82,6 @@ const PriceItem = ({ data }) => {
       }
     } catch (err) {
       console.log('error paying', err);
-      alert('zomg');
     }
   }
 
