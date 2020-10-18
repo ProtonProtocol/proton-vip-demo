@@ -1,0 +1,11 @@
+
+.button {
+  font-weight: bold;
+  transition: all .2s ease-in-out;
+  &.is-primary {
+    color: #fff !important;
+  }
+  &:hover {
+    filter: brightness(.9);
+  }
+}

@@ -1,26 +1,21 @@
+import './App.scss';
+
+import { QueryCache, ReactQueryCacheProvider } from 'react-query'
+import { faCheck, faPaperPlane, faSearch } from '@fortawesome/free-solid-svg-icons'
+
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ReactQueryDevtools } from 'react-query-devtools'
+import Routes from './Routes'
+import { library } from '@fortawesome/fontawesome-svg-core'
 
-function App() {
+const queryCache = new QueryCache()
+library.add(faSearch, faCheck, faPaperPlane)
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Routes />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </ReactQueryCacheProvider>
+  )
 }
-
-export default App;

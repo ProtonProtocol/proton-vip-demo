@@ -1,0 +1,21 @@
+
+// Bulma Overrides
+.input, .textarea {
+  background: transparent;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  color: $white;
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: $half-white;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: $half-white;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    color: $half-white;
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: $half-white;
+  }
+}

@@ -1,0 +1,50 @@
+
+.header {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .logo {
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .search-input {
+    width: 300px;
+    height: 46px;
+    margin-left: 4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: $white-opaq;
+    border-radius: $border-radius;
+    i, svg {
+      font-size: 1.25rem;
+      margin: 0 .5rem;
+    }
+  }
+  .nav-list {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    li {
+      p.signout {
+        float: right;
+        color: #fff;
+        margin-left: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    box-shadow: 0 0 1px 1px rgba(255,255,255,.85);
+  }
+}

@@ -1,0 +1,19 @@
+
+.full-width {
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+.loading-msg {
+  display: block;
+  margin-top: 15rem;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 2rem;
+}
