@@ -13,9 +13,9 @@ const Container = styled.div`
 
 export default function Header() {
 
-  const { authenticate, isAuthenticated, currentUser, signout } = useContext(authContext)
+  const { authenticate, currentUser, signout } = useContext(authContext)
 
-  let showAuthHeader = isAuthenticated;
+  let showAuthHeader = currentUser !== null;
 
   const handleLogin = async () => {
     try {

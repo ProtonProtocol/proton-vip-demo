@@ -65,18 +65,20 @@ const PriceItemCost = styled.h3`
 const PriceItem = ({ data }) => {
   const history = useHistory()
   const timeout = ms => new Promise(res => setTimeout(res, ms))
-  const { authenticate, isAuthenticated } = useContext(authContext)
+  const { authenticate, updateMember, currentUser } = useContext(authContext)
 
   const handleClick = async () => {
     try {
-      if (!isAuthenticated) {
+      let user = currentUser;
+      if (!user) {
         const result = await authenticate()
         if (!result.success) throw new Error();
-        // this timeout is for proton wallet issue
-        // if transaction happens too fast after auth, both modals on the app close
+        user = result.user;
         await timeout(4000)
       }
-      const tx = await ProtonService.sendTransaction(data.cost)
+      const tx = await ProtonService.sendTransaction(data.cost, data.id)
+      await updateMember(user, data.id);
+
       if (tx.processed.id) {
         history.push('/artist');
       }

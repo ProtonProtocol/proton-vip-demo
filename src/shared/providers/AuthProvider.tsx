@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react'
 
 import ProtonService from '../services/proton.service';
 import { User } from '../types'
+import firebaseService from '../services/firebase.service';
 
 interface AuthResponse {
   success: boolean
@@ -10,37 +11,43 @@ interface AuthResponse {
 }
 
 interface AuthContext {
-  isAuthenticated: boolean
   currentUser: User | null
   authenticate?: () => Promise<AuthResponse>
   signout?: () => void
+  updateMember?
 }
 
 export const authContext = createContext<AuthContext>({
-  isAuthenticated: false,
   currentUser: null,
 })
 
 const AuthProvider = ({ children }) => {
 
-  const initialUser = localStorage.getItem('AUTH_USER')
+  const initialUser = JSON.parse(localStorage.getItem('AUTH_USER'));
   if (initialUser) {
     ProtonService.restoreSession();
   }
-  const hasUser = !!initialUser
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    !!(hasUser && initialUser)
-  )
-  const [currentUser, setCurrentUser] = useState<User | null>(JSON.parse(initialUser))
+
+  const [currentUser, setCurrentUser] = useState<User | null>(initialUser ? initialUser : null)
 
   const authenticate = async (): Promise<AuthResponse> => {
     try {
-      const user = await ProtonService.login();
+      let user = await ProtonService.login();
       if (!user) {
         throw new Error();
       }
+
+      const query = await firebaseService.collection('members').where("user", "==", user.actor).get();
+      if (!query.empty) {
+        let member;
+        query.forEach((doc) => {
+          member = doc.data();
+        });
+        user.isMember = true;
+        user.memberLevel = member.level;
+      }
+      localStorage.setItem('AUTH_USER', JSON.stringify(user));
       setCurrentUser(user)
-      setIsAuthenticated(true)
       return {
         success: true,
         user,
@@ -50,17 +57,23 @@ const AuthProvider = ({ children }) => {
     }
   }
 
+  const updateMember = async (user, level) => {
+    user.isMember = true;
+    user.memberLevel = level;
+    localStorage.setItem('AUTH_USER', JSON.stringify(user));
+    setCurrentUser(user);
+  }
+
   const signout = async () => {
     await ProtonService.logout();
-    setIsAuthenticated(false)
     setCurrentUser(null)
   }
 
   return (
     <authContext.Provider
       value={{
-        isAuthenticated,
         currentUser,
+        updateMember,
         authenticate,
         signout,
       }}

@@ -11,12 +11,12 @@ interface Props {
 }
 
 const AuthRoute = ({ children, ...rest }: Props) => {
-  const { isAuthenticated } = useContext(authContext)
+  const { currentUser } = useContext(authContext)
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        isAuthenticated ? (
+        currentUser && currentUser.isMember ? (
           children
         ) : (
           <Redirect

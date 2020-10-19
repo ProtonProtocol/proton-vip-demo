@@ -1,6 +1,7 @@
 import { ConnectWallet } from '@protonprotocol/proton-web-sdk'
 import { PROTON_CHAIN } from '../../constants/proton-chain.constant'
 import ProtonVIPLogo from '../../proton-logo-color.png'
+import firebaseService from './firebase.service';
 
 class ProtonSDK {
   public chainId;
@@ -27,7 +28,6 @@ class ProtonSDK {
       const { session } = await this.link.login(this.appName);
       this.session = session;
       this.user = this._returnUserFromSession(session);
-      localStorage.setItem('AUTH_USER', JSON.stringify(this.user));
       return this.user;
     } catch (e) {
       console.log("Auth error", e);
@@ -35,7 +35,7 @@ class ProtonSDK {
     }
   }
 
-  sendTransaction = async (amount) => {
+  sendTransaction = async (amount, level) => {
 
     const actions = [{
       account: 'xtokens',
@@ -57,6 +57,11 @@ class ProtonSDK {
         { actions: actions },
         { broadcast: true }
       );
+      await firebaseService.collection('members').add({
+        user: this.user.actor,
+        level
+      });
+
       return result;
     } catch (e) {
       return e;

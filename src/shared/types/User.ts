@@ -4,4 +4,6 @@ export interface User {
   avatar: string;
   createdAt: Date;
   name: string;
+  isMember: boolean;
+  memberLevel: string;
 }
