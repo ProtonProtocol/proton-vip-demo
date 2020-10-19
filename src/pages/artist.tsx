@@ -74,7 +74,7 @@ export default function Artist() {
                 { chats.map((chat, index) => (
                   <li key={index}>
                     <div className="chat-item">
-                      <img className="avatar" src={`data:image/jpeg;base64,${currentUser.avatar}`} alt="avatar" />
+                      <img className="avatar" src={`data:image/jpeg;base64,${chat.avatar}`} alt="avatar" />
                       <p>{chat.msg}</p>
                     </div>
                   </li>
