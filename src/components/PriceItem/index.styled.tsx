@@ -1,0 +1,80 @@
+import styled from 'styled-components';
+
+export const PriceBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  opacity: .6;
+  transition: all .2s ease-in-out;
+
+  width: 300px;
+  box-shadow: 0 2px 6px -4px rgba(141, 141, 148, 0.48), 0 0 2px 0 rgba(141, 141, 148, 0.16);
+  border: solid 2px #e3c782;
+  background-color: #191c21;
+  box-sizing: border-box;
+
+  &.popular {
+    opacity: 1;
+    border: 2px solid #E3C681;
+    position: relative;
+    opacity: 1;
+    &:before {
+      content: 'Most Popular';
+      text-align: center;
+      color: #fff;
+      background: #E3C681;
+      position: absolute;
+      width: calc(100% + 4px);
+      top: 0; left: -2px;
+      margin-top: -20px;
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+  &:hover {
+    opacity: 1;
+  }
+`
+
+export const PriceDescription = styled.p`
+  font-size: .9rem;
+  color: #fff;
+  padding-bottom: 1.5em;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  font-family: Avenir;
+`
+
+export const PriceList = styled.ul`
+  width: 100%;
+`
+
+export const PriceListItem = styled.li`
+  width: 100%;
+  color: #fff;
+  font-weight: bold;
+  font-size: .9rem;
+  font-family: Avenir;
+`
+
+export const PriceHeader = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+`
+
+export const PriceItemTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: auto;
+  color: #fff;
+  font-family: Charter;
+`
+
+export const PriceItemCost = styled.h3`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #E3C681;
+`

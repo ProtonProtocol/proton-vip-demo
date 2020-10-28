@@ -1,20 +1,55 @@
-import React, { useContext } from 'react'
+import React from 'react';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
+import { useAuthContext } from '../util/providers/AuthProvider';
+import Layout from '../components/Layout';
+import PriceContainer from '../components/PriceContainer';
+import PriceItem from '../components/PriceItem';
 
-import { AMANDA_DATA } from '../constants/amanda-data.constant';
-import Layout from '../layouts/MainLayout'
-import PriceContainer from '../shared/components/PriceContainer';
-import PriceItem from '../shared/components/PriceItem';
-import { authContext } from '../shared/providers/AuthProvider'
-import { useHistory } from 'react-router-dom'
+const LandingTitle = styled.h1`
+  font-size: 59px;
+  font-size: 3rem;
+  letter-spacing: 8.43px;
+  font-family: Charter-Roman;
+  color: #ffffff;
+  text-align: center;
+  line-height: 3rem;
+  margin-top: 5rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+  span {
+    display: block;
+  }
+  :after {
+    content: '';
+    background: #E3C681;
+    width: 100px;
+    height: 3px;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    margin: auto;
+  }
+`
+
+const Occupation = styled.h3`
+  font-size: 1rem;
+  color: #fff;
+  text-align: center;
+  display: block;
+  margin: 1.5rem 0;
+`
 
 export default function Landing() {
-  const { currentUser } = useContext(authContext)
+  const { firstName, lastName, title, priceLevels } = AMANDA_DATA;
+  const { currentUser } = useAuthContext();
   const history = useHistory();
+
   if (currentUser && currentUser.isMember) {
     history.push('/artist');
   }
-  const data = AMANDA_DATA;
-  const priceLevels = data.priceLevels.map((level, index) =>
+
+  const prices = priceLevels.map((level, index) =>
     <PriceItem key={index} data={level}></PriceItem>
   );
 
@@ -22,15 +57,15 @@ export default function Landing() {
     <Layout>
       <div className="full-bg"></div>
       <div className="container">
-        <h1 className="landing-title">
-          {data.firstName}
-          <span>{data.lastName}</span>
-        </h1>
-        <h3 className="occupation">{data.title}</h3>
+        <LandingTitle>
+          {firstName}
+          <span>{lastName}</span>
+        </LandingTitle>
+        <Occupation>{title}</Occupation>
         <PriceContainer>
-          {priceLevels}
+          {prices}
         </PriceContainer>
       </div>
     </Layout>
-  )
+  );
 }

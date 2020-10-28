@@ -1,11 +1,11 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import React, { Suspense } from 'react'
+import React, { Suspense } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import ArtistPage from './pages/artist'
-import AuthRoute from './AuthRoute'
-import LandingPage from './pages/landing'
-import LoadingPage from './pages/loading'
-import ScrollToTop from './shared/components/ScrollToTop'
+import ArtistPage from '../../pages/artist';
+import AuthRoute from './AuthRoute';
+import LandingPage from '../../pages/landing';
+import LoadingPage from '../../pages/loading';
+import ScrollToTop from '../../components/ScrollToTop';
 
 export enum ProtectedRoutes {
   Artist = '/artist',
@@ -33,5 +33,5 @@ export default function App() {
         </Switch>
       </Suspense>
     </BrowserRouter>
-  )
+  );
 }

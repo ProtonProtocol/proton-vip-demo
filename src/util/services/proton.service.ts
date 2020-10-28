@@ -1,6 +1,6 @@
-import { ConnectWallet } from '@protonprotocol/proton-web-sdk'
-import { PROTON_CHAIN } from '../../constants/proton-chain.constant'
-import ProtonVIPLogo from '../../proton-logo-color.png'
+import { ConnectWallet } from '@protonprotocol/proton-web-sdk';
+import { PROTON_CHAIN } from '../constants/proton-chain.constant';
+import ProtonVIPLogo from '../../util/proton-logo-color.png';
 import firebaseService from './firebase.service';
 
 class ProtonSDK {
