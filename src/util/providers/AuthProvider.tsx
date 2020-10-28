@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import ProtonService from '../services/proton.service';
 import firebaseService from '../services/firebase.service';
 
@@ -46,12 +46,17 @@ export const useAuthContext = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const initialUser = JSON.parse(localStorage.getItem('AUTH_USER'));
-  if (initialUser) {
-    ProtonService.restoreSession();
-  }
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const [currentUser, setCurrentUser] = useState<User | null>(initialUser ? initialUser : null)
+  useEffect(() => {
+    const initialUser = JSON.parse(localStorage.getItem('AUTH_USER'));
+    if (initialUser) {
+      ProtonService.restoreSession();
+      setCurrentUser(initialUser);
+    } else {
+      setCurrentUser(null);
+    }
+  }, []);
 
   const authenticate = async (): Promise<AuthResponse> => {
     try {
@@ -83,7 +88,7 @@ const AuthProvider = ({ children }) => {
         user,
       };
     } catch (err) {
-      console.log("error", err);
+      console.warn('Login Error', err);
     }
   };
 

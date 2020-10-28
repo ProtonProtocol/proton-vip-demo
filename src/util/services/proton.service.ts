@@ -24,13 +24,21 @@ class ProtonSDK {
 
   login = async () => {
     try {
-      this.link = await ConnectWallet({ chainId: this.chainId, endpoints: this.endpoints }, { requestAccount: this.requestAccount }, this.appName, ProtonVIPLogo);
+      this.link = await ConnectWallet({
+        chainId: this.chainId,
+        endpoints: this.endpoints
+      }, {
+        requestAccount: this.requestAccount
+      },
+        this.appName,
+        ProtonVIPLogo,
+      );
       const { session } = await this.link.login(this.appName);
       this.session = session;
       this.user = this._returnUserFromSession(session);
       return this.user;
     } catch (e) {
-      console.log("Auth error", e);
+      console.warn('Auth error', e);
       return null;
     }
   }
@@ -47,7 +55,9 @@ class ProtonSDK {
       data: {
         from: this.user.actor,
         to: this.requestAccount,
-        quantity: `${amount}.000000 FOOBAR`, // note this in future docs, decimals must be 6 or transaction fails
+        // Note in future docs:
+        // Quantity must have a decimal length of 6 or transaction fails
+        quantity: `${amount}.000000 FOOBAR`,
         memo: 'ProtonVIP'
       }
     }];
@@ -84,14 +94,17 @@ class ProtonSDK {
           ProtonVIPLogo,
           false
         );
-        const result = await this.link.restoreSession(this.appName, { actor: savedUserAuth.actor, permission: savedUserAuth.permission });
+        const result = await this.link.restoreSession(this.appName, {
+          actor: savedUserAuth.actor,
+          permission: savedUserAuth.permission,
+        });
         if (result) {
           this.session = result;
           this.user = this._returnUserFromSession(this.session);
           return this.user;
         }
       } catch (e) {
-        console.log('error', e);
+        console.warn('Session Restoration Error:', e);
         return null;
       }
     }
@@ -113,5 +126,5 @@ class ProtonSDK {
 
 }
 
-const protonSDK = new ProtonSDK();
-export default protonSDK;
+const ProtonService = new ProtonSDK();
+export default ProtonService;
