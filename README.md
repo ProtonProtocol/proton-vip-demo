@@ -1,6 +1,6 @@
 # ProtonVIP Demo
 
-This demo shows the practical usage and integration of the [Proton Web Sdk](https://www.npmjs.com/package/@protonprotocol/proton-web-sdk) with a simple web application. 
+This demo shows the practical usage and integration of the [Proton Web Sdk](https://www.npmjs.com/package/@protonprotocol/proton-web-sdk) with a simple web application.
 
 Please note that this is not a real web application. The only portions of this app that work are the authentication and transactions with Proton Wallet. You may view the live version of this demo (which uses ProtonChain Mainnet) on [Proton Demos](https://protondemos.com).
 
@@ -16,6 +16,8 @@ npm install
 npm start
 ```
 
+After starting up the project locally, before logging in, you'll need to join as a `Patron`, `VIP`, or `Mega VIP` member of ProtonVIP. Note that you will be unable to log in unless you have joined as a ProtonVIP member.
+
 ## Chain and Endpoint Information
 
 This demo includes a `PROTON_CHAIN` variable that declares the `chainId` and `endpoints` needed to connected to the ProtonChain Mainnet. You can find the variables in the **proton-chain.constant.ts** file.
@@ -24,7 +26,7 @@ This demo includes a `PROTON_CHAIN` variable that declares the `chainId` and `en
 export const PROTON_CHAIN = {
   chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0',
   endpoints: ['https://proton.greymass.com'],
-  appName: 'Protonvip',
+  appName: 'ProtonVIP',
   requestAccount: 'taskly',
 }
 ```
