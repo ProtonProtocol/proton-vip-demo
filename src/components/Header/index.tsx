@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../util/providers/AuthProvider';
-import Button from '../Button';
+import { Button } from '../Button/index.styled';
 import {
   Container,
-  NavList,
-  NavListItem,
   LogoContainer,
-  StyledHeader,
   SearchBar,
-  Avatar,
+  LogoutButton,
 } from './index.styled';
 
 const Header = () => {
@@ -30,29 +27,23 @@ const Header = () => {
 
   return (
     <Container>
-      <StyledHeader>
-        <LogoContainer>
-          <Link to="/">
-            <img src="/proton-logo.png" alt="Proton" />
-          </Link>
-        </LogoContainer>
-        <SearchBar>
-          <FontAwesomeIcon icon="search" size="sm" />
-          <input type="text" placeholder="Search" />
-        </SearchBar>
-        <NavList>
-          { isAuthenticated ? (
-            <NavListItem>
-              <Avatar src={`data:image/jpeg;base64,${currentUser.avatar}`} alt="avatar" />
-              <p className="signout" onClick={signout}>Logout</p>
-            </NavListItem>
-          ) : (
-            <NavListItem>
-              <Button onClick={handleLogin} width={120}>Login</Button>
-            </NavListItem>
-          )}
-        </NavList>
-      </StyledHeader>
+      <LogoContainer>
+        <Link to="/">
+          <img src="/proton-logo.png" alt="Proton" />
+        </Link>
+      </LogoContainer>
+      <SearchBar>
+        <FontAwesomeIcon icon="search" size="sm" />
+        <input type="text" placeholder="Search" />
+      </SearchBar>
+        { isAuthenticated ? (
+          <LogoutButton onClick={signout}>
+            <img src={`data:image/jpeg;base64,${currentUser.avatar}`} alt="avatar" />
+            <span>Logout</span>
+          </LogoutButton>
+        ) : (
+          <Button onClick={handleLogin} style={{ opacity: 1, width: 120 }}>LOGIN</Button>
+        )}
     </Container>
   );
 };

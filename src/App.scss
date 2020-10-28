@@ -1,78 +1,11 @@
-// Set colors
-$brown: #757763;
-$beige-light: #d0d1cd;
-$beige-lighter: #eff0eb;
-$yellow: #E3C681;
-
-// Bulma's global variables
-$family-sans-serif: 'Roboto', sans-serif;
-$grey-dark: $brown;
-$grey-light: $beige-light;
-$white-opaq: rgba(255,255,255,.15);
-$primary: $yellow;
-$link: $yellow;
-$white: #fff;
-$half-white: rgba(255,255,255,.5);
-
-// Update Bulma's variables
-$body-background-color: $beige-lighter;
-$control-border-width: 2px;
-$input-border-color: transparent;
-$input-shadow: none;
-$border-radius: 12px;
-
-.primary-color {
-  color: $yellow;
-}
-
-.primary-bg {
-  background: $yellow;
-}
-
-// Import Bulma
+@import './fonts.sass';
 @import '../node_modules/bulma/bulma.sass';
 
 * {
   z-index: 1;
 }
 
-.full-bg {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url('/girl.png') no-repeat;
-  background-size: cover;
-  z-index: -1;
-  pointer-events: none;
-  &:before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(
-      rgba(0, 0, 0, 0.45) 0%,
-      rgba(0, 0, 0, 0.55) 20%,
-      rgba(0, 0, 0, 0.65) 40%,
-      rgba(0, 0, 0, 0.75)  60%,
-      rgba(0, 0, 0, 0.85)  80%,
-      rgba(0, 0, 0, 1.0)  100%
-    );
-  };
-  &:after {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(
-      rgba(66, 58, 58, 0.45) 0%,
-      rgba(0, 0, 0, 0.55) 20%,
-      rgba(15, 15, 15, 0.65) 40%,
-      rgba(25, 25, 25, 0.75)  60%,
-      rgba(25, 25, 25, 0.85)  80%,
-      rgb(25, 25, 25)  100%
-    );
-  };
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
-

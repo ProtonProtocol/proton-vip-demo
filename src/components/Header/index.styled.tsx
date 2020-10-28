@@ -1,47 +1,51 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
   width: 100%;
-  align-items: center;
-`
-
-export const StyledHeader = styled.div`
-  height: 70px;
+  height: 85px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: #141414;
+  position: fixed;
+  z-index: 2;
 `
 
 export const SearchBar = styled.div`
-  width: 300px;
-  height: 46px;
-  margin-left: 4rem;
+  margin-left: -7%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: $white-opaq;
-  border-radius: $border-radius;
+  background-color: #1f2229;
+  width: 45%;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px -4px rgba(141, 141, 148, 0.48), 0 0 2px 0 rgba(141, 141, 148, 0.16);
+  
   i, svg {
-    font-size: 1.25rem;
-    margin: 0 .5rem;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin: 10px;
   }
-`
-
-export const NavList = styled.ul`
-  margin-left: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-`
-
-export const NavListItem = styled.li`
-  float: right;
-  color: #fff;
-  margin-left: 30px;
-  margin-top: 10px;
-  cursor: pointer;
+  
+  input {
+    background-color: #1f2229;
+    outline: none;
+    border: none;
+    width: 100%;
+    font-family: Avenir;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: normal;
+    color: #8e98a9;
+  }
 `
 
 export const LogoContainer = styled.div`
@@ -52,9 +56,20 @@ export const LogoContainer = styled.div`
   align-items: center;
 `
 
-export const Avatar = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  box-shadow: 0 0 1px 1px rgba(255,255,255,.85);
+export const LogoutButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    box-shadow: 0 0 1px 1px rgba(255,255,255,.85);
+  }
+
+  :hover {
+    cursor: pointer;
+  }
 `

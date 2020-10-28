@@ -5,7 +5,14 @@ import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
 import firebaseService from '../util/services/firebase.service';
 import Layout from '../components/Layout';
 import { useAuthContext } from '../util/providers/AuthProvider';
-import Button from '../components/Button';
+import {
+  ArtistPageContainer,
+  Column,
+  ChatContainer,
+  InputContainer,
+  ArtistName,
+  ArtistImg,
+} from './artist.styled';
 
 export default function Artist() {
   const { firstName, lastName } = AMANDA_DATA;
@@ -23,8 +30,7 @@ export default function Artist() {
           return;
         }
     });
-    // eslint-disable-next-line
-  }, [currentUser.actor]);
+  }, [currentUser.actor, history]);
 
   useEffect(() => {
     const unsubscribe = firebaseService.collection('chats').orderBy('date')
@@ -62,47 +68,39 @@ export default function Artist() {
 
   return (
     <Layout>
-      <div className="container">
-        <div className="columns">
-          <div className="column is-5">
-            <h1 className="artist-name">
+      <ArtistPageContainer>
+          <Column>
+            <ArtistName>
               {firstName}
               <span>{lastName}</span>
-            </h1>
-            <div className="chat-container">
+            </ArtistName>
+            <ChatContainer>
               <ul className="chat-log" id="chatLog">
                 { chats.map((chat, index) => (
                   <li key={index}>
                     <div className="chat-item">
-                      <img className="avatar" src={`data:image/jpeg;base64,${chat.avatar}`} alt="avatar" />
+                      <img alt="avatar" src={`data:image/jpeg;base64,${chat.avatar}`} />
                       <p>{chat.msg}</p>
                     </div>
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="input-container">
+            </ChatContainer>
+            <InputContainer>
               <input type="text"
                 placeholder="Type something..."
                 value={input}
                 onKeyDown={async (e) => {
                   if (e.key === 'Enter' && e.shiftKey === false && input) {
-                    await onSendChat()
+                    await onSendChat();
                   }
                 }}
                 onChange={(event) => setInput(event.target.value)} />
-              <Button onClick={async () => await onSendChat()}>
-                <FontAwesomeIcon icon="paper-plane" size="sm" />
-              </Button>
-            </div>
-          </div>
-          <div className="column is-7">
-            <div className="artist-img">
-              <img src="/girl.png" alt="artist" />
-            </div>
-          </div>
-        </div>
-      </div>
+              <FontAwesomeIcon onClick={async () => await onSendChat()} icon="paper-plane" size="sm" />
+            </InputContainer>
+          </Column>
+          <ArtistImg src="/girl.png" alt="artist" />
+        </ArtistPageContainer>
     </Layout>
   );
 }

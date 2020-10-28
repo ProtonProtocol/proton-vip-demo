@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProtonService from '../../util/services/proton.service';
 import { useAuthContext } from '../../util/providers/AuthProvider';
-import Button from '../Button';
+import { Button } from '../Button/index.styled';
 import {
   PriceBox,
   PriceDescription,
@@ -49,31 +49,29 @@ const PriceItem = ({ data }: Props) => {
         history.push('/artist');
       }
     } catch (err) {
-      console.log('error paying', err);
+      console.warn('Transaction Error', err);
     }
   }
 
   return (
-    <div className="column">
-      <PriceBox className={popular ? 'popular' : ''}>
-        <PriceHeader>
-          <PriceItemTitle>{title}</PriceItemTitle>
-          <PriceItemCost>${cost}</PriceItemCost>
-        </PriceHeader>
-        <PriceDescription>
-          {description}
-        </PriceDescription>
-        <PriceList>
-          {list.map(el =>
-            <PriceListItem key={el}>
-              <FontAwesomeIcon icon="check" size="sm" className="mr-2 primary-color" />
-              {el}
-            </PriceListItem>
-          )}
-        </PriceList>
-        <Button onClick={handleClick}>JOIN</Button>
-      </PriceBox>
-    </div>
+    <PriceBox className={popular ? 'popular' : ''}>
+      <PriceHeader>
+        <PriceItemTitle>{title}</PriceItemTitle>
+        <PriceItemCost>${cost}</PriceItemCost>
+      </PriceHeader>
+      <PriceDescription>
+        {description}
+      </PriceDescription>
+      <PriceList>
+        {list.map(el =>
+          <PriceListItem key={el}>
+            <FontAwesomeIcon icon="check" size="sm" />
+            {el}
+          </PriceListItem>
+        )}
+      </PriceList>
+      <Button onClick={handleClick}>JOIN</Button>
+    </PriceBox>
   );
 };
 

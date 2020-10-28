@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const StyledButton = styled.button`
-  width: ${(props) => props.width ? props.width : '296'}px;
+export const Button = styled.button`
+  width: 296px;
   height: 48px;
   opacity: 0.4;
   border-radius: 4px;
@@ -15,10 +15,15 @@ export const StyledButton = styled.button`
   letter-spacing: 3px;
   text-align: center;
   color: #ffffff;
-  transition: 0.2s;
+  transition: all .2s ease-in-out;
+  outline: none;
 
   :hover {
-    filter: brightness(.9);
     cursor: pointer;
+    opacity: 1;
+  }
+
+  :focus {
+    border: 3px solid white;
   }
 `
