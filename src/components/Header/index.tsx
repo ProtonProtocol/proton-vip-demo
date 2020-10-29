@@ -26,7 +26,7 @@ const Header = () => {
       </SearchBar>
         { isAuthenticated ? (
           <NavRightContainer>
-            <img src={`data:image/jpeg;base64,${currentUser.avatar}`} alt="avatar" />
+            <img alt="avatar" src={currentUser.avatar ? `data:image/jpeg;base64,${currentUser.avatar}` : "./default-avatar.png"} />
             <Button onClick={signout} style={{ opacity: 0.9, width: 100 }}>LOGOUT</Button>
           </NavRightContainer>
         ) : (
