@@ -1,15 +1,13 @@
-import './App.scss';
-
-import { QueryCache, ReactQueryCacheProvider } from 'react-query'
-import { faCheck, faPaperPlane, faSearch } from '@fortawesome/free-solid-svg-icons'
-
+import './styles/global.scss';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query-devtools';
+import { faCheck, faPaperPlane, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import Routes from './util/routes/Routes';
 import React from 'react';
-import { ReactQueryDevtools } from 'react-query-devtools'
-import Routes from './Routes'
-import { library } from '@fortawesome/fontawesome-svg-core'
 
-const queryCache = new QueryCache()
-library.add(faSearch, faCheck, faPaperPlane)
+const queryCache = new QueryCache();
+library.add(faSearch, faCheck, faPaperPlane);
 
 export default function App() {
   return (
@@ -17,5 +15,5 @@ export default function App() {
       <Routes />
       <ReactQueryDevtools initialIsOpen={false} />
     </ReactQueryCacheProvider>
-  )
+  );
 }

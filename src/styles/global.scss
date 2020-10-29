@@ -1,0 +1,11 @@
+@import './fonts.sass';
+@import '../../node_modules/bulma/bulma.sass';
+
+* {
+  z-index: 1;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

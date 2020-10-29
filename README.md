@@ -1,44 +1,50 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ProtonVIP Demo
 
-## Available Scripts
+This demo shows the practical usage and integration of the [Proton Web
+Sdk](https://www.npmjs.com/package/@protonprotocol/proton-web-sdk) with a simple
+web application.
 
-In the project directory, you can run:
+Please note that this is not a real web application. The only portions of this
+app that work are the authentication and transactions with Proton Wallet. You
+may view the live version of this demo (which uses ProtonChain Mainnet) on
+[Proton VIP](https://vip.protonchain.com).
 
-### `yarn start`
+## To build and run locally
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### npm
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+git clone https://github.com/ProtonProtocol/proton-vip-demo.git
 
-### `yarn test`
+npm install
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+npm start
+```
 
-### `yarn build`
+After starting up the project locally, you'll need to join as a `Patron`, `VIP`,
+or `Mega VIP` member of ProtonVIP. Note that you need Foobar tokens in order to
+register. Visit the [Foobar Faucet](https://foobar.protonchain.com/) to receive
+free test tokens.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Chain and Endpoint Information
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+This demo includes a `PROTON_CHAIN` variable that declares the `chainId` and
+`endpoints` needed to connected to the ProtonChain Mainnet. You can find the
+variables in the **proton-chain.constant.ts** file.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+export const PROTON_CHAIN = {
+  chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0',
+  endpoints: ['https://proton.greymass.com'],
+  appName: 'ProtonVIP',
+  requestAccount: 'protonvip',
+}
+```
 
-### `yarn eject`
+### ProtonChain Testnet
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+In order to switch to connect to ProtonChain Testnet, you would need to run the
+project locally and change the `chainId` and `endpoints` to the values below.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Chain ID: 71ee83bcf52142d61019d95f9cc5427ba6a0d7ff8accd9e2088ae2abeaf3d3dd
+- Endpoint: https://testnet.protonchain.com
