@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../util/providers/AuthProvider';
@@ -7,24 +7,12 @@ import {
   Container,
   LogoContainer,
   SearchBar,
-  LogoutButton,
+  NavRightContainer,
 } from './index.styled';
 
 const Header = () => {
-  const { authenticate, currentUser, signout } = useAuthContext();
-  const [isAuthenticated, setIsAuthenticated] = useState(currentUser !== null);
-
-  const handleLogin = async () => {
-    try {
-      const result = await authenticate();
-      setIsAuthenticated(result.success);
-      return result.success;
-    } catch (err) {
-      console.error('Login error: ', err);
-    }
-    return false;
-  };
-
+  const { currentUser, signout } = useAuthContext();
+  const isAuthenticated = currentUser !== null;
   return (
     <Container>
       <LogoContainer>
@@ -37,12 +25,12 @@ const Header = () => {
         <input type="text" placeholder="Search" />
       </SearchBar>
         { isAuthenticated ? (
-          <LogoutButton onClick={signout}>
+          <NavRightContainer>
             <img src={`data:image/jpeg;base64,${currentUser.avatar}`} alt="avatar" />
-            <span>Logout</span>
-          </LogoutButton>
+            <Button onClick={signout} style={{ opacity: 0.9, width: 100 }}>LOGOUT</Button>
+          </NavRightContainer>
         ) : (
-          <Button onClick={handleLogin} style={{ opacity: 1, width: 120 }}>LOGIN</Button>
+          <div />
         )}
     </Container>
   );

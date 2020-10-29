@@ -56,9 +56,9 @@ export const LogoContainer = styled.div`
   align-items: center;
 `
 
-export const LogoutButton = styled.div`
+export const NavRightContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
@@ -69,7 +69,7 @@ export const LogoutButton = styled.div`
     box-shadow: 0 0 1px 1px rgba(255,255,255,.85);
   }
 
-  :hover {
-    cursor: pointer;
-  }
+  * {
+    margin: 10px;
+  } 
 `

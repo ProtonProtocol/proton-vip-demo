@@ -30,7 +30,7 @@ interface Props {
 const PriceItem = ({ data }: Props) => {
   const history = useHistory();
   const timeout = ms => new Promise(res => setTimeout(res, ms));
-  const { authenticate, updateMember, currentUser } = useAuthContext();
+  const { authenticate, updateMember, currentUser, signout } = useAuthContext();
   const { popular, title, cost, description, list } = data;
 
   const handleClick = async () => {
@@ -50,6 +50,8 @@ const PriceItem = ({ data }: Props) => {
       }
     } catch (err) {
       console.warn('Transaction Error', err);
+      signout();
+      history.push('/');
     }
   }
 
