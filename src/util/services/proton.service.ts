@@ -25,15 +25,11 @@ class ProtonSDK {
   login = async () => {
     try {
       this.link = await ConnectWallet({
-        chainId: this.chainId,
-        endpoints: this.endpoints
-      }, {
-        requestAccount: this.requestAccount
-      },
-        this.appName,
-        ProtonVIPLogo,
-      );
-      const { session } = await this.link.login(this.appName);
+        linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
+        transportOptions: { requestAccount: this.requestAccount },
+        selectorOptions: { appName: this.appName,appLogo: ProtonVIPLogo}
+      });
+      const { session } = await this.link.login(this.requestAccount);
       this.session = session;
       this.user = this._returnUserFromSession(session);
       return this.user;
@@ -44,7 +40,6 @@ class ProtonSDK {
   }
 
   sendTransaction = async (amount, level) => {
-
     const actions = [{
       account: 'xtokens',
       name: 'transfer',
@@ -78,20 +73,18 @@ class ProtonSDK {
 
   logout = async () => {
     await this.link.removeSession(this.appName, this.session.auth);
-    localStorage.removeItem('AUTH_USER');
+    localStorage.removeItem('AUTH_USER_PROTON_VIP');
   }
 
   restoreSession = async () => {
-    const savedUserAuth = JSON.parse(localStorage.getItem('AUTH_USER'));
+    const savedUserAuth = JSON.parse(localStorage.getItem('AUTH_USER_PROTON_VIP'));
     if (savedUserAuth) {
       try {
-        this.link = await ConnectWallet(
-          { chainId: this.chainId, endpoints: this.endpoints },
-          { requestAccount: this.requestAccount },
-          this.appName,
-          ProtonVIPLogo,
-          false
-        );
+        this.link = await ConnectWallet({
+          linkOptions: { chainId: this.chainId, endpoints: this.endpoints},
+          transportOptions: { requestAccount: this.requestAccount },
+          selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo, showSelector: false}
+        });
         const result = await this.link.restoreSession(this.appName, {
           actor: savedUserAuth.actor,
           permission: savedUserAuth.permission,

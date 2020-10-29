@@ -1,14 +1,14 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: "AIzaSyBTdmYHtu9q1m-heSRK91cuy4b7ZK73cvs",
-  authDomain: "proton-vip-demo.firebaseapp.com",
-  databaseURL: "https://proton-vip-demo.firebaseio.com",
-  projectId: "proton-vip-demo",
-  storageBucket: "proton-vip-demo.appspot.com",
-  messagingSenderId: "912829614960",
-  appId: "1:912829614960:web:bfa2b2bef798bd963e1db5",
-  measurementId: "G-9YKHBL9FYY"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 firebase.initializeApp(config);

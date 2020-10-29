@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const initialUser = JSON.parse(localStorage.getItem('AUTH_USER'));
+    const initialUser = JSON.parse(localStorage.getItem('AUTH_USER_PROTON_VIP'));
     if (initialUser) {
       ProtonService.restoreSession();
       setCurrentUser(initialUser);
@@ -80,7 +80,7 @@ const AuthProvider = ({ children }) => {
         user.memberLevel = member.level;
       }
 
-      localStorage.setItem('AUTH_USER', JSON.stringify(user));
+      localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
       setCurrentUser(user);
 
       return {
@@ -95,7 +95,7 @@ const AuthProvider = ({ children }) => {
   const updateMember = async (user, level) => {
     user.isMember = true;
     user.memberLevel = level;
-    localStorage.setItem('AUTH_USER', JSON.stringify(user));
+    localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
     setCurrentUser(user);
   };
 
