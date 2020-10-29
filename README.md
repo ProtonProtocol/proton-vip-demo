@@ -16,7 +16,7 @@ npm install
 npm start
 ```
 
-After starting up the project locally, before logging in, you'll need to join as a `Patron`, `VIP`, or `Mega VIP` member of ProtonVIP. Note that you will be unable to log in unless you have joined as a ProtonVIP member.
+After starting up the project locally, you'll need to join as a `Patron`, `VIP`, or `Mega VIP` member of ProtonVIP. Note that you need Foobar tokens in order to register. Visit the [Foobar Faucet](https://foobar.protonchain.com/) to receive free test tokens.
 
 ## Chain and Endpoint Information
 
@@ -27,7 +27,7 @@ export const PROTON_CHAIN = {
   chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0',
   endpoints: ['https://proton.greymass.com'],
   appName: 'ProtonVIP',
-  requestAccount: 'taskly',
+  requestAccount: 'protonvip',
 }
 ```
 
