@@ -6,8 +6,4 @@ export const LayoutContainer = styled.div`
   flex-direction: column;
   background: #141414;
   height: 100%;
-  main {
-  //   flex-grow: 1;
-  //   height: inherit;
-  }
 `

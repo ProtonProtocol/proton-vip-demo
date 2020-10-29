@@ -55,8 +55,6 @@ class ProtonSDK {
       data: {
         from: this.user.actor,
         to: this.requestAccount,
-        // Note in future docs:
-        // Quantity must have a decimal length of 6 or transaction fails
         quantity: `${amount}.000000 FOOBAR`,
         memo: 'ProtonVIP'
       }
