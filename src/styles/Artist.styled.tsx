@@ -128,7 +128,7 @@ export const ArtistName = styled.h1`
 `
 
 export const ArtistImg = styled.img`
-  margin-top: 5rem;
+  margin-top: 100px;
   border-radius: 20px;
   width: 803px;
   height: 692px;

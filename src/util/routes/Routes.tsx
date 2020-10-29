@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import ArtistPage from '../../pages/artist';
+import ArtistPage from '../../pages/Artist';
 import AuthRoute from './AuthRoute';
-import LandingPage from '../../pages/landing';
-import LoadingPage from '../../pages/loading';
+import LandingPage from '../../pages/Landing';
+import LoadingPage from '../../pages/Loading';
 import ScrollToTop from '../../components/ScrollToTop';
 
 export enum ProtectedRoutes {

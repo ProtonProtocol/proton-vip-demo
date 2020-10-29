@@ -12,7 +12,7 @@ import {
   InputContainer,
   ArtistName,
   ArtistImg,
-} from './artist.styled';
+} from '../styles/Artist.styled';
 
 export default function Artist() {
   const { firstName, lastName } = AMANDA_DATA;

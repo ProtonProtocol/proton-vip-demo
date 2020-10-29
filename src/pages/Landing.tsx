@@ -4,7 +4,7 @@ import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
 import { useAuthContext } from '../util/providers/AuthProvider';
 import Layout from '../components/Layout';
 import PriceItem from '../components/PriceItem';
-import { PriceContainer, LandingTitle, Occupation, Container, Background } from './landing.styled';
+import { PriceContainer, LandingTitle, Occupation, Container, Background } from '../styles/Landing.styled';
 
 export default function Landing() {
   const { firstName, lastName, title, priceLevels } = AMANDA_DATA;
