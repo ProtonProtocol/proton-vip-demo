@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProtonService from '../../util/services/proton.service';
@@ -50,7 +50,6 @@ const PriceItem = ({ data }: Props) => {
       }
     } catch (err) {
       console.warn('Transaction Error', err);
-      signout();
       history.push('/');
     }
   }

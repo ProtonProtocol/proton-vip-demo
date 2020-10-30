@@ -56,6 +56,10 @@ const AuthProvider = ({ children }) => {
     } else {
       setCurrentUser(null);
     }
+
+    document.addEventListener('backToSelector', () => {
+      authenticate();
+    });
   }, []);
 
   const authenticate = async (): Promise<AuthResponse> => {
