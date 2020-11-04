@@ -2,7 +2,11 @@ import Header from '../Header';
 import React from 'react';
 import { LayoutContainer } from './index.styled';
 
-const Layout = ({ children }) => (
+interface LayoutProps {
+  children: JSX.Element | JSX.Element[];
+}
+
+const Layout = ({ children }: LayoutProps) => (
   <LayoutContainer>
     <Header />
     <main>{children}</main>

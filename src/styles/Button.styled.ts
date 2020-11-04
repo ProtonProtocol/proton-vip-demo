@@ -15,7 +15,7 @@ export const Button = styled.button`
   letter-spacing: 3px;
   text-align: center;
   color: #ffffff;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   outline: none;
 
   :hover {
@@ -26,4 +26,4 @@ export const Button = styled.button`
   :focus {
     border: 3px solid white;
   }
-`
+`;

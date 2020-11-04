@@ -3,8 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
 import { useAuthContext } from '../util/providers/AuthProvider';
 import Layout from '../components/Layout';
-import PriceItem from '../components/PriceItem';
-import { PriceContainer, LandingTitle, Occupation, Container, Background } from '../styles/Landing.styled';
+import Prices from '../components/Prices';
+import {
+  LandingTitle,
+  Occupation,
+  Container,
+  Background,
+} from '../styles/Landing.styled';
 
 export default function Landing() {
   const { firstName, lastName, title, priceLevels } = AMANDA_DATA;
@@ -26,11 +31,7 @@ export default function Landing() {
           <span>{lastName}</span>
         </LandingTitle>
         <Occupation>{title}</Occupation>
-        <PriceContainer>
-          {priceLevels.map((level) =>
-            <PriceItem key={level.id} data={level}></PriceItem>
-          )}
-        </PriceContainer>
+        <Prices priceLevels={priceLevels} />
       </Container>
     </Layout>
   );
