@@ -1,4 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
+import { useHistory } from 'react-router-dom';
 import ProtonService from '../services/proton.service';
 import firebaseService from '../services/firebase.service';
 
@@ -21,8 +28,8 @@ interface AuthResponse {
 interface AuthContext {
   currentUser: User;
   authenticate: () => Promise<AuthResponse>;
+  signup: (dataCost: number, dataId: string) => Promise<void>;
   signout: () => void;
-  updateMember: (user: User, level: string) => void;
 }
 
 interface AuthProviderProps {
@@ -48,11 +55,11 @@ const authContext = createContext<AuthContext>({
   currentUser: defaultCurrentUser,
   authenticate: () => Promise.resolve({ success: false }),
   signout: () => {},
-  updateMember: () => {},
+  signup: () => Promise.resolve(),
 });
 
 export const useAuthContext = (): AuthContext => {
-  const { currentUser, authenticate, signout, updateMember } = useContext(
+  const { currentUser, authenticate, signout, signup } = useContext(
     authContext
   );
 
@@ -60,11 +67,15 @@ export const useAuthContext = (): AuthContext => {
     currentUser,
     authenticate,
     signout,
-    updateMember,
+    signup,
   };
 };
 
+export const timeout = (ms: number) =>
+  new Promise((res) => setTimeout(res, ms));
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
+  const history = useHistory();
   const [currentUser, setCurrentUser] = useState<User>(defaultCurrentUser);
 
   useEffect(() => {
@@ -132,16 +143,40 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setCurrentUser(defaultCurrentUser);
   };
 
+  const signup = async (dataCost: number, dataId: string) => {
+    try {
+      let user = currentUser;
+      if (!user.actor) {
+        const result = await authenticate();
+        if (!result.success) throw new Error();
+        user = result.user;
+        await timeout(4000);
+      }
+
+      const tx = await ProtonService.sendTransaction(dataCost, dataId);
+      await updateMember(user, dataId);
+      if (tx.processed.id) {
+        history.push('/artist');
+      }
+    } catch (err) {
+      console.warn('Transaction Error', err);
+      signout();
+    }
+  };
+
+  const authState = useMemo<AuthContext>(
+    () => ({
+      currentUser,
+      authenticate,
+      signout,
+      signup,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentUser]
+  );
+
   return (
-    <authContext.Provider
-      value={{
-        currentUser,
-        updateMember,
-        authenticate,
-        signout,
-      }}>
-      {children}
-    </authContext.Provider>
+    <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
 };
 

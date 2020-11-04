@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
-import { useAuthContext } from '../util/providers/AuthProvider';
 import Layout from '../components/Layout';
 import Prices from '../components/Prices';
 import {
@@ -13,14 +11,6 @@ import {
 
 export default function Landing() {
   const { firstName, lastName, title, priceLevels } = AMANDA_DATA;
-  const { currentUser } = useAuthContext();
-  const history = useHistory();
-
-  useEffect(() => {
-    if (currentUser && currentUser.isMember) {
-      history.push('/artist');
-    }
-  }, [currentUser, history]);
 
   return (
     <Layout>

@@ -12,5 +12,20 @@ const config = {
 };
 
 firebase.initializeApp(config);
+const firebaseService = firebase.firestore();
 
-export default firebase.firestore();
+export const createMessage = async (
+  sender: string,
+  msg: string,
+  avatar: string
+) => {
+  const chat = {
+    sender,
+    msg,
+    avatar,
+    date: Date.now(),
+  };
+  await firebaseService.collection('chats').add(chat);
+};
+
+export default firebaseService;

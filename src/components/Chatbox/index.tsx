@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import firebaseService from '../../util/services/firebase.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Column,
@@ -9,6 +8,7 @@ import {
   ChatItem,
 } from './index.styled';
 import { AMANDA_DATA } from '../../util/constants/amanda-data.constant';
+import { createMessage } from '../../util/services/firebase.service';
 
 interface Chat {
   date: number;
@@ -29,14 +29,14 @@ const Chatbox = ({ chats, sender, avatar, chatlist }: ChatboxProps) => {
   const [input, setInput] = useState('');
 
   const sendChat = async () => {
-    const chat = {
-      sender,
-      msg: input,
-      avatar,
-      date: Date.now(),
-    };
+    createMessage(sender, input, avatar);
     setInput('');
-    await firebaseService.collection('chats').add(chat);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isValidEnterKeyDown =
+      e.key === 'Enter' && e.shiftKey === false && input;
+    if (isValidEnterKeyDown) sendChat();
   };
 
   return (
@@ -68,13 +68,7 @@ const Chatbox = ({ chats, sender, avatar, chatlist }: ChatboxProps) => {
           value={input}
           placeholder="Type something..."
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            const isValidEnterKeyDown =
-              e.key === 'Enter' && e.shiftKey === false && input;
-            if (isValidEnterKeyDown) {
-              sendChat();
-            }
-          }}
+          onKeyDown={handleKeyDown}
         />
         <FontAwesomeIcon onClick={sendChat} icon="paper-plane" size="sm" />
       </InputContainer>

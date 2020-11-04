@@ -43,7 +43,8 @@
     "eject": "react-scripts eject",
     "typecheck": "$(npm bin)/tsc --noEmit",
     "format": "prettier --write src",
-    "lint": "eslint './src/**/*.ts*' --fix"
+    "lint": "eslint './src/**/*.ts*' --fix",
+    "test:all": "npm run format && npm run typecheck && npm run test:coverage"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,7 +65,8 @@
     "collectCoverageFrom": [
       "**/*.{ts,tsx}",
       "!**/node_modules/**",
-      "!**/util/**",
+      "!**/services/**",
+      "!**/providers/**",
       "!**/src/*.{ts,tsx}"
     ]
   }
