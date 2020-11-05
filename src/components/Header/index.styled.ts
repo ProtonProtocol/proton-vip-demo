@@ -75,3 +75,11 @@ export const NavRightContainer = styled.div`
     margin: 10px;
   }
 `;
+
+export const NavRightText = styled.span`
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  font-family: Avenir;
+  margin: 10px;
+`;

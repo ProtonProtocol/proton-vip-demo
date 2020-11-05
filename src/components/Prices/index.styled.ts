@@ -85,7 +85,7 @@ export const PriceListItem = styled.li`
 
   svg {
     color: #e3c681;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 `;
 
