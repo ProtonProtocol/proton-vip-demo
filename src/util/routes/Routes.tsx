@@ -6,7 +6,6 @@ import PublicRoute from './PublicRoute';
 import ProtectedRoute from './ProtectedRoute';
 import LandingPage from '../../pages/Landing';
 import LoadingPage from '../../pages/Loading';
-import ScrollToTop from '../../components/ScrollToTop';
 
 export enum ProtectedRoutes {
   Artist = '/artist',
@@ -19,7 +18,6 @@ export enum PublicRoutes {
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
       <Suspense fallback={<LoadingPage />}>
         <Switch>
           <ProtectedRoute exact path="/" component={ArtistPage} />

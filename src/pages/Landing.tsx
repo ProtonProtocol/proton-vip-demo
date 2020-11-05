@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AMANDA_DATA } from '../util/constants/amanda-data.constant';
 import Layout from '../components/Layout';
 import Prices from '../components/Prices';
@@ -9,8 +9,12 @@ import {
   Background,
 } from '../styles/Landing.styled';
 
-export default function Landing() {
+const Landing = () => {
   const { firstName, lastName, title, priceLevels } = AMANDA_DATA;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Layout>
@@ -25,4 +29,6 @@ export default function Landing() {
       </Container>
     </Layout>
   );
-}
+};
+
+export default Landing;

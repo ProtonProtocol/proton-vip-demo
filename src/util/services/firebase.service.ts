@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import firebase from 'firebase';
 
 const config = {
@@ -12,7 +13,15 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
 const firebaseService = firebase.firestore();
+
+interface Chat {
+  avatar: string;
+  date: number;
+  msg: string;
+  sender: string;
+}
 
 export const createMessage = async (
   sender: string,
@@ -26,6 +35,29 @@ export const createMessage = async (
     date: Date.now(),
   };
   await firebaseService.collection('chats').add(chat);
+};
+
+export const useFirebaseChats = () => {
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = firebaseService
+      .collection('chats')
+      .orderBy('date')
+      .onSnapshot((snapshot) => {
+        if (snapshot.size) {
+          const firebaseChats: Chat[] = [];
+          snapshot.forEach((doc) => {
+            firebaseChats.push(doc.data() as Chat);
+          });
+          setChats(firebaseChats);
+        }
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  return chats;
 };
 
 export default firebaseService;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Column,
@@ -8,7 +8,11 @@ import {
   ChatItem,
 } from './index.styled';
 import { AMANDA_DATA } from '../../util/constants/amanda-data.constant';
-import { createMessage } from '../../util/services/firebase.service';
+import {
+  createMessage,
+  useFirebaseChats,
+} from '../../util/services/firebase.service';
+import { useAuthContext } from '../../util/providers/AuthProvider';
 
 interface Chat {
   date: number;
@@ -17,25 +21,27 @@ interface Chat {
   msg: string;
 }
 
-interface ChatboxProps {
-  chats: Chat[];
-  sender: string;
-  avatar: string;
-  chatlist: React.MutableRefObject<HTMLUListElement | null>;
-}
-
-const Chatbox = ({ chats, sender, avatar, chatlist }: ChatboxProps) => {
+const Chatbox = () => {
   const { firstName, lastName } = AMANDA_DATA;
-  const [input, setInput] = useState('');
+  const { currentUser } = useAuthContext();
+  const chats: Chat[] = useFirebaseChats();
+  const chatlist = useRef<HTMLUListElement | null>(null);
+  const [input, setInput] = React.useState('');
 
-  const sendChat = async () => {
-    createMessage(sender, input, avatar);
+  useEffect(() => {
+    if (chats.length && chatlist && chatlist.current) {
+      chatlist.current.scrollTop = chatlist.current.scrollHeight;
+    }
+  }, [chats.length]);
+
+  const sendChat = () => {
+    const { avatar, name } = currentUser;
+    createMessage(name, input, avatar);
     setInput('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const isValidEnterKeyDown =
-      e.key === 'Enter' && e.shiftKey === false && input;
+    const isValidEnterKeyDown = e.key === 'Enter' && e.shiftKey === false;
     if (isValidEnterKeyDown) sendChat();
   };
 
@@ -46,7 +52,7 @@ const Chatbox = ({ chats, sender, avatar, chatlist }: ChatboxProps) => {
         <span>{lastName}</span>
       </ArtistName>
       <ChatContainer>
-        <ul id="chatlist" ref={chatlist}>
+        <ul ref={chatlist}>
           {chats.map(({ date, msg, avatar, sender }) => (
             <ChatItem key={`${date}-${sender}`}>
               <img
