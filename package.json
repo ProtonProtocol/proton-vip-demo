@@ -44,7 +44,7 @@
     "typecheck": "$(npm bin)/tsc --noEmit",
     "format": "prettier --write src",
     "lint": "eslint './src/**/*.ts*' --fix",
-    "test:all": "npm run format && npm run typecheck && npm run test:coverage"
+    "test:all": "npm run format && npm run typecheck && npm run test:coverage && open coverage/lcov-report/index.html"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -67,6 +67,7 @@
       "!**/node_modules/**",
       "!**/services/**",
       "!**/providers/**",
+      "!**/routes/**",
       "!**/src/*.{ts,tsx}"
     ]
   }
