@@ -34,7 +34,12 @@ describe('Chatbox component', () => {
     jest.spyOn(React, 'useState').mockReturnValue([input, setInput]);
     render(<Chatbox />);
     const inputField = screen.getByRole('textbox');
-    fireEvent.keyDown(inputField, { key: 'Enter', code: 13, charCode: 13, shiftKey: true });
+    fireEvent.keyDown(inputField, {
+      key: 'Enter',
+      code: 13,
+      charCode: 13,
+      shiftKey: true,
+    });
     expect(createMessageSpy).toBeCalledTimes(0);
   });
 
@@ -42,7 +47,7 @@ describe('Chatbox component', () => {
     const setInput = jest.fn();
     const input = 'test';
     jest.spyOn(React, 'useState').mockReturnValue([input, setInput]);
-    
+
     render(<Chatbox />);
 
     const images = screen.getAllByRole('img', { hidden: true });
@@ -50,7 +55,12 @@ describe('Chatbox component', () => {
     expect(createMessageSpy).toBeCalledTimes(1);
 
     const inputField = screen.getByRole('textbox');
-    fireEvent.keyDown(inputField, { key: 'Enter', code: 13, charCode: 13, shiftKey: false });
+    fireEvent.keyDown(inputField, {
+      key: 'Enter',
+      code: 13,
+      charCode: 13,
+      shiftKey: false,
+    });
     expect(createMessageSpy).toBeCalledTimes(2);
   });
 
