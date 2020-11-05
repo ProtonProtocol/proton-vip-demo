@@ -1,60 +1,37 @@
 import styled from 'styled-components';
 
-export const ArtistPageContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #141414;
-  height: 100%;
-  padding-left: 5%;
-`
-  
-export const Column = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-left: 10%;
-  margin-right: 3%;
-`
-
-export const ChatContainer = styled.div`
+export const ChatContainer = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
   height: 400px;
-  
-  .chat-log {
+
+  ul {
     overflow-y: auto;
   }
+`;
 
-  li {
-    display: block;
-    margin-top: 2rem;
-    flex: 1 1 auto;
+export const ChatItem = styled.li`
+  margin-top: 2rem;
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
 
-    .chat-item {
-      min-height: 0;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    img {
-      width: 50px;
-      height: 50px;
-      border-radius: 100%;
-    }
-    
-    p {
-      color: #fff;
-      font-size: 14px;
-      margin-left: 10px;
-    }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
   }
-`
+
+  p {
+    color: #fff;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+`;
 
 export const InputContainer = styled.div`
   display: flex;
@@ -67,20 +44,23 @@ export const InputContainer = styled.div`
   width: 100%;
   height: 40px;
   border-radius: 100px;
-  box-shadow: 0 2px 6px -4px rgba(141, 141, 148, 0.48), 0 0 2px 0 rgba(141, 141, 148, 0.16);
+  box-shadow: 0 2px 6px -4px rgba(141, 141, 148, 0.48),
+    0 0 2px 0 rgba(141, 141, 148, 0.16);
   padding: 20px;
 
-  i, svg {
+  i,
+  svg {
     width: 20px;
     height: 20px;
     object-fit: contain;
     margin: 10px;
   }
 
-  i:hover, svg:hover {
+  i:hover,
+  svg:hover {
     cursor: pointer;
   }
-  
+
   input {
     background-color: #1f2229;
     outline: none;
@@ -96,7 +76,16 @@ export const InputContainer = styled.div`
     color: #8e98a9;
     width: 100%;
   }
-`
+`;
+
+export const Column = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 10%;
+  margin-right: 3%;
+`;
 
 export const ArtistName = styled.h1`
   margin-top: 5rem;
@@ -112,7 +101,7 @@ export const ArtistName = styled.h1`
   color: #ffffff;
   position: relative;
   margin-bottom: 20px;
-  
+
   span {
     display: block;
   }
@@ -125,13 +114,4 @@ export const ArtistName = styled.h1`
     position: absolute;
     margin-top: 20px;
   }
-`
-
-export const ArtistImg = styled.img`
-  margin-top: 100px;
-  border-radius: 20px;
-  width: 803px;
-  height: 692px;
-  object-fit: cover;
-  object-position: 90%; /* try 20px 10px */ 
-`
+`;

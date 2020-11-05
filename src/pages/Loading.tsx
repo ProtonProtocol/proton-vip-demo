@@ -9,14 +9,12 @@ const LoadingMessage = styled.p`
   text-align: center;
   color: #fff;
   font-size: 2rem;
-`
+`;
 
 export default function Loading() {
   return (
     <Layout>
-      <LoadingMessage>
-        Loading...
-      </LoadingMessage>
+      <LoadingMessage>Loading...</LoadingMessage>
     </Layout>
   );
 }

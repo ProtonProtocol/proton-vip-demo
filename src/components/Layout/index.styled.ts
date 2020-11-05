@@ -6,4 +6,4 @@ export const LayoutContainer = styled.div`
   flex-direction: column;
   background: #141414;
   height: 100%;
-`
+`;

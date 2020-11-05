@@ -3,4 +3,4 @@ export const PROTON_CHAIN = {
   endpoints: ['https://proton.greymass.com'],
   appName: 'ProtonVIP',
   requestAccount: 'protonvip',
-}
+};

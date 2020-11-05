@@ -1,16 +1,23 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
+import { useHistory } from 'react-router-dom';
 import ProtonService from '../services/proton.service';
 import firebaseService from '../services/firebase.service';
 
-interface User {
+export type User = {
   actor: string;
   permission: string;
   avatar: string;
   createdAt: Date;
   name: string;
-  isMember: boolean;
-  memberLevel: string;
-}
+  isMember?: boolean;
+  memberLevel?: string;
+};
 
 interface AuthResponse {
   success: boolean;
@@ -19,42 +26,66 @@ interface AuthResponse {
 }
 
 interface AuthContext {
-  currentUser: User | null;
-  authenticate?: () => Promise<AuthResponse>;
-  signout?: () => void;
-  updateMember?;
+  currentUser: User;
+  authenticate: () => Promise<AuthResponse>;
+  signup: (dataCost: number, dataId: string) => Promise<void>;
+  signout: () => void;
 }
 
+interface AuthProviderProps {
+  children: JSX.Element;
+}
+
+interface Member {
+  user: string;
+  level: string;
+}
+
+export const defaultCurrentUser = {
+  actor: '',
+  permission: '',
+  avatar: '',
+  createdAt: new Date(),
+  name: '',
+  isMember: false,
+  memberLevel: '',
+};
+
 const authContext = createContext<AuthContext>({
-  currentUser: null,
+  currentUser: defaultCurrentUser,
+  authenticate: () => Promise.resolve({ success: false }),
+  signout: () => {},
+  signup: () => Promise.resolve(),
 });
 
-export const useAuthContext = () => {
-  const {
-    currentUser,
-    authenticate,
-    signout,
-    updateMember,
-  } = useContext(authContext);
+export const useAuthContext = (): AuthContext => {
+  const { currentUser, authenticate, signout, signup } = useContext(
+    authContext
+  );
 
   return {
     currentUser,
     authenticate,
     signout,
-    updateMember,
+    signup,
   };
 };
 
-const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+export const timeout = (ms: number) =>
+  new Promise((res) => setTimeout(res, ms));
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
+  const history = useHistory();
+  const [currentUser, setCurrentUser] = useState<User>(defaultCurrentUser);
 
   useEffect(() => {
-    const initialUser = JSON.parse(localStorage.getItem('AUTH_USER_PROTON_VIP'));
-    if (initialUser) {
+    const token: string = localStorage.getItem('AUTH_USER_PROTON_VIP') || '';
+    if (token) {
+      const initialUser = JSON.parse(token);
       ProtonService.restoreSession();
       setCurrentUser(initialUser);
     } else {
-      setCurrentUser(null);
+      setCurrentUser(defaultCurrentUser);
     }
 
     document.addEventListener('backToSelector', () => {
@@ -72,13 +103,13 @@ const AuthProvider = ({ children }) => {
 
       const query = await firebaseService
         .collection('members')
-        .where("user", "==", user.actor)
+        .where('user', '==', user.actor)
         .get();
 
       if (!query.empty) {
-        let member;
+        let member: Member = { level: '', user: '' };
         query.forEach((doc) => {
-          member = doc.data();
+          member = doc.data() as Member;
         });
         user.isMember = true;
         user.memberLevel = member.level;
@@ -93,10 +124,13 @@ const AuthProvider = ({ children }) => {
       };
     } catch (err) {
       console.warn('Login Error', err);
+      return {
+        success: false,
+      };
     }
   };
 
-  const updateMember = async (user, level) => {
+  const updateMember = async (user: User, level: string) => {
     user.isMember = true;
     user.memberLevel = level;
     localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
@@ -105,20 +139,44 @@ const AuthProvider = ({ children }) => {
 
   const signout = async () => {
     await ProtonService.logout();
-    setCurrentUser(null);
+    localStorage.removeItem('AUTH_USER_PROTON_VIP');
+    setCurrentUser(defaultCurrentUser);
   };
 
+  const signup = async (dataCost: number, dataId: string) => {
+    try {
+      let user = currentUser;
+      if (!user.actor) {
+        const result = await authenticate();
+        if (!result.success) throw new Error();
+        user = result.user;
+        await timeout(4000);
+      }
+
+      const tx = await ProtonService.sendTransaction(dataCost, dataId);
+      await updateMember(user, dataId);
+      if (tx.processed.id) {
+        history.push('/artist');
+      }
+    } catch (err) {
+      console.warn('Transaction Error', err);
+      signout();
+    }
+  };
+
+  const authState = useMemo<AuthContext>(
+    () => ({
+      currentUser,
+      authenticate,
+      signout,
+      signup,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentUser]
+  );
+
   return (
-    <authContext.Provider
-      value={{
-        currentUser,
-        updateMember,
-        authenticate,
-        signout,
-      }}
-    >
-      {children}
-    </authContext.Provider>
+    <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
 };
 

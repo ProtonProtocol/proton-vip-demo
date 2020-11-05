@@ -1,34 +1,38 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { PublicRoutes } from './Routes';
+import { ProtectedRoutes } from './Routes';
 import { useAuthContext } from '../providers/AuthProvider';
 
-interface Props {
-  children: JSX.Element
-  path: string
-  exact?: boolean
+interface PublicRouteProps {
+  component: () => JSX.Element;
+  path: string;
+  exact?: boolean;
 }
 
-const AuthRoute = ({ children, ...rest }: Props) => {
+const PublicRoute = ({
+  component: Component,
+  path,
+  exact,
+}: PublicRouteProps) => {
   const { currentUser } = useAuthContext();
-
   return (
     <Route
-      {...rest}
+      path={path}
+      exact={exact}
       render={({ location }) =>
         currentUser && currentUser.isMember ? (
-          children
-        ) : (
           <Redirect
             to={{
-              pathname: PublicRoutes.Landing,
+              pathname: ProtectedRoutes.Artist,
               state: { from: location },
             }}
           />
+        ) : (
+          <Component />
         )
       }
     />
   );
 };
 
-export default AuthRoute;
+export default PublicRoute;
