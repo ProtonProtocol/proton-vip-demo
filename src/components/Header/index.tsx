@@ -25,7 +25,11 @@ const Header = () => {
       {isAuthenticated ? (
         <NavRightContainer>
           <img
-            alt="avatar"
+            alt={
+              currentUser.avatar
+                ? `avatar-${currentUser.actor}`
+                : 'avatar-default'
+            }
             src={
               currentUser.avatar
                 ? `data:image/jpeg;base64,${currentUser.avatar}`

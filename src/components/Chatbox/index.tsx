@@ -56,7 +56,7 @@ const Chatbox = () => {
           {chats.map(({ date, msg, avatar, sender }) => (
             <ChatItem key={`${date}-${sender}`}>
               <img
-                alt={sender}
+                alt={avatar ? `${sender}-avatar` : `${sender}-default-avatar`}
                 src={
                   avatar
                     ? `data:image/jpeg;base64,${avatar}`
