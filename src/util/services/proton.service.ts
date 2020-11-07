@@ -11,7 +11,7 @@ class ProtonSDK {
   public appName;
   public requestAccount;
   public session: LinkSession | null;
-  public link: Link | null;
+  public link?: Link | null;
   public user: User;
 
   constructor() {
@@ -42,7 +42,7 @@ class ProtonSDK {
         },
         selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo },
       });
-      const { session } = await this.link.login(this.requestAccount);
+      const { session } = await this.link!.login(this.requestAccount);
       this.session = session;
       this.user = this._returnUserFromSession(session);
       return this.user;
@@ -97,7 +97,7 @@ class ProtonSDK {
         return;
       }
 
-      await this.link.removeSession(this.appName, this.session.auth);
+      await this.link!.removeSession(this.appName, this.session.auth);
       localStorage.removeItem('AUTH_USER_PROTON_VIP');
     }
   };
@@ -119,7 +119,7 @@ class ProtonSDK {
             showSelector: false,
           },
         });
-        const result = await this.link.restoreSession(this.appName, {
+        const result = await this.link!.restoreSession(this.appName, {
           actor: savedUserAuth.actor,
           permission: savedUserAuth.permission,
         });
