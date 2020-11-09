@@ -84,8 +84,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const initialUser = JSON.parse(token);
       ProtonService.restoreSession();
       setCurrentUser(initialUser);
-    } else {
-      setCurrentUser(defaultCurrentUser);
     }
 
     document.addEventListener('backToSelector', () => {
@@ -155,8 +153,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const tx = await ProtonService.sendTransaction(dataCost, dataId);
       await updateMember(user, dataId);
-      if (tx.processed.id) {
-        history.push('/artist');
+      if (!tx.processed.id) {
+        history.push('/');
       }
     } catch (err) {
       console.warn('Transaction Error', err);

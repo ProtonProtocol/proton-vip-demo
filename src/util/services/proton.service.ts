@@ -32,18 +32,23 @@ class ProtonSDK {
     };
   }
 
+  connect = async (restoreSession=false, showSelector=true) => {
+    const { link, session } = await ConnectWallet({
+      linkOptions: { chainId: this.chainId, endpoints: this.endpoints, restoreSession },
+      transportOptions: {
+        requestAccount: this.requestAccount,
+        backButton: true,
+      },
+      selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo, showSelector },
+    });
+    this.link = link;
+    this.session = session;
+    return session;
+  }
+
   login = async () => {
     try {
-      this.link = await ConnectWallet({
-        linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
-        transportOptions: {
-          requestAccount: this.requestAccount,
-          backButton: true,
-        },
-        selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo },
-      });
-      const { session } = await this.link!.login(this.requestAccount);
-      this.session = session;
+      const session = await this.connect();
       this.user = this._returnUserFromSession(session);
       return this.user;
     } catch (e) {
@@ -92,14 +97,12 @@ class ProtonSDK {
   };
 
   logout = async () => {
-    if (this.session) {
-      if (!this.link) {
-        return;
-      }
-
-      await this.link!.removeSession(this.appName, this.session.auth);
-      localStorage.removeItem('AUTH_USER_PROTON_VIP');
+    if (!this.session && !this.link) {
+      return;
     }
+
+    await this.link!.removeSession(this.appName, this.session!.auth);
+    localStorage.removeItem('AUTH_USER_PROTON_VIP');
   };
 
   restoreSession = async () => {
@@ -107,24 +110,8 @@ class ProtonSDK {
     const savedUserAuth = JSON.parse(token);
     if (savedUserAuth) {
       try {
-        this.link = await ConnectWallet({
-          linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
-          transportOptions: {
-            requestAccount: this.requestAccount,
-            backButton: true,
-          },
-          selectorOptions: {
-            appName: this.appName,
-            appLogo: ProtonVIPLogo,
-            showSelector: false,
-          },
-        });
-        const result = await this.link!.restoreSession(this.appName, {
-          actor: savedUserAuth.actor,
-          permission: savedUserAuth.permission,
-        });
-        if (result) {
-          this.session = result;
+        const session = await this.connect(true, false);
+        if (session) {
           this.user = this._returnUserFromSession(this.session);
           return this.user;
         }
