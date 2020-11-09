@@ -12,7 +12,7 @@ export enum ProtectedRoutes {
 }
 
 export enum PublicRoutes {
-  Landing = '/landing',
+  Landing = '/',
 }
 
 export default function App() {
@@ -20,12 +20,11 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<LoadingPage />}>
         <Switch>
-          <ProtectedRoute exact path="/" component={ArtistPage} />
-          <PublicRoute path={PublicRoutes.Landing} component={LandingPage} />
           <ProtectedRoute
             path={ProtectedRoutes.Artist}
             component={ArtistPage}
           />
+          <PublicRoute path={PublicRoutes.Landing} component={LandingPage} />
         </Switch>
       </Suspense>
     </BrowserRouter>
