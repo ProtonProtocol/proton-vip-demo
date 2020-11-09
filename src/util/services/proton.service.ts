@@ -34,7 +34,7 @@ class ProtonSDK {
 
   login = async () => {
     try {
-      this.link = await ConnectWallet({
+      const { link, session } = await ConnectWallet({
         linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
         transportOptions: {
           requestAccount: this.requestAccount,
@@ -42,7 +42,7 @@ class ProtonSDK {
         },
         selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo },
       });
-      const { session } = await this.link!.login(this.requestAccount);
+      this.link = link;
       this.session = session;
       this.user = this._returnUserFromSession(session);
       return this.user;
@@ -92,14 +92,12 @@ class ProtonSDK {
   };
 
   logout = async () => {
-    if (this.session) {
-      if (!this.link) {
-        return;
-      }
-
-      await this.link!.removeSession(this.appName, this.session.auth);
-      localStorage.removeItem('AUTH_USER_PROTON_VIP');
+    if (!this.session && !this.link) {
+      return;
     }
+
+    await this.link!.removeSession(this.appName, this.session!.auth);
+    localStorage.removeItem('AUTH_USER_PROTON_VIP');
   };
 
   restoreSession = async () => {
@@ -107,11 +105,14 @@ class ProtonSDK {
     const savedUserAuth = JSON.parse(token);
     if (savedUserAuth) {
       try {
-        this.link = await ConnectWallet({
-          linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
+        const { link, session } = await ConnectWallet({
+          linkOptions: {
+            chainId: this.chainId,
+            endpoints: this.endpoints,
+            restoreSession: true,
+          },
           transportOptions: {
             requestAccount: this.requestAccount,
-            backButton: true,
           },
           selectorOptions: {
             appName: this.appName,
@@ -119,12 +120,10 @@ class ProtonSDK {
             showSelector: false,
           },
         });
-        const result = await this.link!.restoreSession(this.appName, {
-          actor: savedUserAuth.actor,
-          permission: savedUserAuth.permission,
-        });
-        if (result) {
-          this.session = result;
+        this.link = link;
+        this.session = session;
+
+        if (session) {
           this.user = this._returnUserFromSession(this.session);
           return this.user;
         }
