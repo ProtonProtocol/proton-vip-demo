@@ -32,18 +32,23 @@ class ProtonSDK {
     };
   }
 
+  connect = async (restoreSession=false, showSelector=true) => {
+    const { link, session } = await ConnectWallet({
+      linkOptions: { chainId: this.chainId, endpoints: this.endpoints, restoreSession },
+      transportOptions: {
+        requestAccount: this.requestAccount,
+        backButton: true,
+      },
+      selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo, showSelector },
+    });
+    this.link = link;
+    this.session = session;
+    return session;
+  }
+
   login = async () => {
     try {
-      const { link, session } = await ConnectWallet({
-        linkOptions: { chainId: this.chainId, endpoints: this.endpoints },
-        transportOptions: {
-          requestAccount: this.requestAccount,
-          backButton: true,
-        },
-        selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo },
-      });
-      this.link = link;
-      this.session = session;
+      const session = await this.connect();
       this.user = this._returnUserFromSession(session);
       return this.user;
     } catch (e) {
@@ -105,24 +110,7 @@ class ProtonSDK {
     const savedUserAuth = JSON.parse(token);
     if (savedUserAuth) {
       try {
-        const { link, session } = await ConnectWallet({
-          linkOptions: {
-            chainId: this.chainId,
-            endpoints: this.endpoints,
-            restoreSession: true,
-          },
-          transportOptions: {
-            requestAccount: this.requestAccount,
-          },
-          selectorOptions: {
-            appName: this.appName,
-            appLogo: ProtonVIPLogo,
-            showSelector: false,
-          },
-        });
-        this.link = link;
-        this.session = session;
-
+        const session = await this.connect(true, false);
         if (session) {
           this.user = this._returnUserFromSession(this.session);
           return this.user;
