@@ -63,10 +63,6 @@ export const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media (max-width: 920px) {
-    max-width: 200px;
-  }
 `;
 
 export const NavRightContainer = styled.div`
