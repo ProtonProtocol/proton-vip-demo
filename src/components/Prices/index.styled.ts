@@ -10,6 +10,10 @@ export const PriceContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 920px) {
+    display: none;
+  }
 `;
 
 export const PriceBox = styled.div<PriceBoxProps>`
@@ -17,7 +21,7 @@ export const PriceBox = styled.div<PriceBoxProps>`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin: 0.5rem;
+  margin: 0.5rem auto;
   padding: 32px 32px 34px 32px;
   transition: all 0.2s ease-in-out;
   width: 345px;
@@ -107,4 +111,12 @@ export const PriceItemCost = styled.h3`
   font-size: 1.5rem;
   font-weight: bold;
   color: #e3c681;
+`;
+
+export const PriceCarousel = styled.div`
+  display: none;
+
+  @media (max-width: 920px) {
+    display: block;
+  }
 `;

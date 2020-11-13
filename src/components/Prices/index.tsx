@@ -1,6 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuthContext } from '../../util/providers/AuthProvider';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 import { Button } from '../../styles/Button.styled';
 import {
   PriceContainer,
@@ -11,6 +13,7 @@ import {
   PriceItemTitle,
   PriceItemCost,
   PriceHeader,
+  PriceCarousel
 } from './index.styled';
 
 type PriceData = {
@@ -31,11 +34,21 @@ interface PricesProps {
 }
 
 const Prices = ({ priceLevels }: PricesProps) => (
-  <PriceContainer>
-    {priceLevels.map((level) => (
-      <PriceItem key={level.id} data={level} />
-    ))}
-  </PriceContainer>
+  <>
+    <PriceCarousel>
+      <Carousel showArrows={false} showStatus={false} showThumbs={false} selectedItem={1}>
+        {priceLevels.map((level) => (
+          <PriceItem key={level.id} data={level} />
+        ))}
+      </Carousel>
+    </PriceCarousel>
+
+    <PriceContainer>
+      {priceLevels.map((level) => (
+        <PriceItem key={level.id} data={level} />
+      ))}
+    </PriceContainer>
+  </>
 );
 
 const PriceItem = ({ data }: PriceItemProps) => {
