@@ -26,4 +26,8 @@ export const Button = styled.button`
   :focus {
     border: 3px solid white;
   }
+
+  @media (max-width: 920px) {
+    opacity: 1;
+  }
 `;

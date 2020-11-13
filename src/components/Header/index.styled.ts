@@ -7,15 +7,18 @@ export const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding: 0 5%;
   background-color: #141414;
   position: fixed;
   z-index: 2;
+
+  @media (max-width: 920px) {
+    padding: 0 3%;
+  }
 `;
 
 export const SearchBar = styled.div`
-  margin-left: -7%;
+  margin-left: 5%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -48,11 +51,15 @@ export const SearchBar = styled.div`
     letter-spacing: normal;
     color: #8e98a9;
   }
+
+  @media (max-width: 920px) {
+    margin-left: 0;
+  }
 `;
 
 export const LogoContainer = styled.div`
   width: 200px;
-  padding: 10px;
+  padding-right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,6 +81,10 @@ export const NavRightContainer = styled.div`
   * {
     margin: 10px;
   }
+
+  @media (max-width: 920px) {
+    max-width: 200px;
+  }
 `;
 
 export const NavRightText = styled.span`
@@ -82,4 +93,8 @@ export const NavRightText = styled.span`
   font-size: 0.9rem;
   font-family: Avenir;
   margin: 10px;
+
+  @media (max-width: 920px) {
+    margin-right: 0;
+  }
 `;
