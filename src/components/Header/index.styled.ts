@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from '../../styles/Button.styled';
 
 export const Container = styled.div`
   width: 100%;
@@ -11,49 +12,11 @@ export const Container = styled.div`
   background-color: #141414;
   position: fixed;
   z-index: 2;
+  overflow: hidden;
 
   @media (max-width: 920px) {
     padding: 0 3%;
-  }
-`;
-
-export const SearchBar = styled.div`
-  margin-left: 5%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #1f2229;
-  width: 45%;
-  height: 40px;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px -4px rgba(141, 141, 148, 0.48),
-    0 0 2px 0 rgba(141, 141, 148, 0.16);
-
-  i,
-  svg {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    margin: 10px;
-  }
-
-  input {
-    background-color: #1f2229;
-    outline: none;
-    border: none;
-    width: 100%;
-    font-family: Avenir;
-    font-size: 14px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.71;
-    letter-spacing: normal;
-    color: #8e98a9;
-  }
-
-  @media (max-width: 920px) {
-    margin-left: 0;
+    height: 65px;
   }
 `;
 
@@ -63,6 +26,16 @@ export const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 920px) {
+    width: 150px;
+    padding-right: 0px;
+  }
+
+  @media (max-width: 340px) {
+    width: 125px;
+    padding-right: 0px;
+  }
 `;
 
 export const NavRightContainer = styled.div`
@@ -80,10 +53,18 @@ export const NavRightContainer = styled.div`
 
   * {
     margin: 10px;
+
+    @media (max-width: 920px) {
+      margin-right: 0;
+    }
   }
 
   @media (max-width: 920px) {
-    max-width: 200px;
+    max-width: 160px;
+  }
+
+  @media (max-width: 320px) {
+    max-width: 150px;
   }
 `;
 
@@ -96,5 +77,28 @@ export const NavRightText = styled.span`
 
   @media (max-width: 920px) {
     margin-right: 0;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 320px) {
+    font-size: 0.7rem;
+  }
+`;
+
+export const NavButton = styled(Button)`
+  width: 100px;
+
+  @media (max-width: 920px) {
+    width: 90px;
+    height: 35px;
+    text-align: center;
+    font-size: 12px;
+    margin-left: 0;
+  }
+`;
+
+export const NavProfile = styled.img`
+  @media (max-width: 920px) {
+    margin-right: 8px;
   }
 `;
