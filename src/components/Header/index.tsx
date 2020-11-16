@@ -1,8 +1,10 @@
 import React from 'react';
 import { useAuthContext } from '../../util/providers/AuthProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   Container,
+  SearchBar,
   LogoContainer,
   NavRightContainer,
   NavRightText,
@@ -18,6 +20,10 @@ const Header = () => {
       <LogoContainer>
         <img src="/proton-logo.png" alt="Proton" />
       </LogoContainer>
+      <SearchBar>
+        <FontAwesomeIcon icon="search" size="sm" />
+        <input type="text" placeholder="Search" />
+      </SearchBar>
       {isAuthenticated ? (
         <NavRightContainer>
           <NavProfile
