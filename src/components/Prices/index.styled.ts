@@ -21,7 +21,7 @@ export const PriceBox = styled.div<PriceBoxProps>`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin: 0.5rem auto;
+  margin: 0.5rem;
   padding: 32px 32px 34px 32px;
   transition: all 0.2s ease-in-out;
   width: 345px;
@@ -61,6 +61,10 @@ export const PriceBox = styled.div<PriceBoxProps>`
     button {
       opacity: 1;
     }
+  }
+
+  @media (max-width: 920px) {
+    margin: 0.5rem auto;
   }
 `;
 
