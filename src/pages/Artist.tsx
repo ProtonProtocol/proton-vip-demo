@@ -11,6 +11,11 @@ export const ArtistPageContainer = styled.div`
   background-color: #141414;
   height: 100%;
   padding-left: 5%;
+  overflow: hidden;
+
+  @media (max-width: 920px) {
+    padding-left: 0;
+  }
 `;
 
 export const ArtistImg = styled.img`
@@ -20,6 +25,10 @@ export const ArtistImg = styled.img`
   height: 692px;
   object-fit: cover;
   object-position: 90%;
+
+  @media (max-width: 920px) {
+    display: none;
+  }
 `;
 
 const Artist = () => {
