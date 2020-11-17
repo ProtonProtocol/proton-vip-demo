@@ -40,6 +40,7 @@ export const Occupation = styled.h3`
 
 export const Container = styled.div`
   margin-top: 10%;
+  overflow: hidden;
 `;
 
 export const Background = styled.div`
