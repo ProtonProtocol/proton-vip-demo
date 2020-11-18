@@ -8,7 +8,6 @@ export const LandingTitle = styled.h1`
   color: #ffffff;
   text-align: center;
   line-height: 3rem;
-  margin-top: 5rem;
   position: relative;
   padding-bottom: 1.5rem;
 
@@ -26,6 +25,10 @@ export const LandingTitle = styled.h1`
     right: 0;
     bottom: 0;
     margin: auto;
+  }
+
+  @media (max-width: 920px) {
+    margin-top: 5rem;
   }
 `;
 

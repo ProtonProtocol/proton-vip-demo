@@ -117,7 +117,7 @@ export const PriceItemCost = styled.h3`
   color: #e3c681;
 `;
 
-export const PriceCarousel = styled.div`
+export const PriceCarouselMobile = styled.div`
   display: none;
 
   @media (max-width: 920px) {
