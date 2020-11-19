@@ -132,7 +132,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     user.isMember = true;
     user.memberLevel = level;
     localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
-    setCurrentUser(user);
+    setCurrentUser(Object.assign({}, user));
   };
 
   const signout = async () => {
