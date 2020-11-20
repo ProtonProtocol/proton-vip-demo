@@ -38,7 +38,7 @@ const Header = () => {
                 : './default-avatar.png'
             }
           />
-          <NavButton onClick={signout} style={{ opacity: 0.9 }}>
+          <NavButton onClick={signout}>
             LOGOUT
           </NavButton>
         </NavRightContainer>
