@@ -1,13 +1,15 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuthContext } from '../../util/providers/AuthProvider';
-import { Button } from '../../styles/Button.styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   Container,
-  LogoContainer,
   SearchBar,
+  LogoContainer,
   NavRightContainer,
   NavRightText,
+  NavButton,
+  NavProfile
 } from './index.styled';
 
 const Header = () => {
@@ -24,7 +26,7 @@ const Header = () => {
       </SearchBar>
       {isAuthenticated ? (
         <NavRightContainer>
-          <img
+          <NavProfile
             alt={
               currentUser.avatar
                 ? `avatar-${currentUser.actor}`
@@ -36,16 +38,16 @@ const Header = () => {
                 : './default-avatar.png'
             }
           />
-          <Button onClick={signout} style={{ opacity: 0.9, width: 100 }}>
+          <NavButton onClick={signout}>
             LOGOUT
-          </Button>
+          </NavButton>
         </NavRightContainer>
       ) : (
         <NavRightContainer>
           <NavRightText>Already a member?</NavRightText>
-          <Button onClick={authenticate} style={{ width: 100 }}>
+          <NavButton onClick={authenticate}>
             LOGIN
-          </Button>
+          </NavButton>
         </NavRightContainer>
       )}
     </Container>
