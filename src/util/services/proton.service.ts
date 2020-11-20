@@ -6,10 +6,10 @@ import Link, { LinkSession } from '@protonprotocol/proton-link';
 import { User } from '../providers/AuthProvider';
 
 class ProtonSDK {
-  public chainId;
-  public endpoints;
-  public appName;
-  public requestAccount;
+  public chainId: any;
+  public endpoints: any;
+  public appName: any;
+  public requestAccount: any;
   public session: LinkSession | null;
   public link?: Link | null;
   public user: User;
@@ -32,19 +32,27 @@ class ProtonSDK {
     };
   }
 
-  connect = async (restoreSession=false, showSelector=true) => {
+  connect = async (restoreSession = false, showSelector = true) => {
     const { link, session } = await ConnectWallet({
-      linkOptions: { chainId: this.chainId, endpoints: this.endpoints, restoreSession },
+      linkOptions: {
+        chainId: this.chainId,
+        endpoints: this.endpoints,
+        restoreSession,
+      },
       transportOptions: {
         requestAccount: this.requestAccount,
         backButton: true,
       },
-      selectorOptions: { appName: this.appName, appLogo: ProtonVIPLogo, showSelector },
+      selectorOptions: {
+        appName: this.appName,
+        appLogo: ProtonVIPLogo,
+        showSelector,
+      },
     });
     this.link = link;
     this.session = session;
     return session;
-  }
+  };
 
   login = async () => {
     try {
