@@ -15,6 +15,7 @@ export const ArtistPageContainer = styled.div`
 
   @media (max-width: 920px) {
     padding-left: 0;
+    padding-bottom: 48px;
   }
 `;
 
