@@ -85,6 +85,11 @@ export const Column = styled.div`
   width: 100%;
   margin-left: 10%;
   margin-right: 3%;
+
+  @media (max-width: 920px) {
+    width: 80%;
+    margin: 0 auto;
+  }
 `;
 
 export const ArtistName = styled.h1`
@@ -113,5 +118,9 @@ export const ArtistName = styled.h1`
     height: 1px;
     position: absolute;
     margin-top: 20px;
+
+    @media (max-width: 920px) {
+      width: 75%;
+    }
   }
 `;
