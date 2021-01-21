@@ -6,7 +6,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
-    "@protonprotocol/proton-web-sdk": "2.6.0",
+    "@proton/web-sdk": "2.7.7",
     "axios": "^0.20.0",
     "bulma": "^0.9.1",
     "eosio-signing-request": "^1.2.1",

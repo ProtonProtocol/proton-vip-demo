@@ -1,15 +1,15 @@
-import { ConnectWallet } from '@protonprotocol/proton-web-sdk';
+import { ConnectWallet } from '@proton/web-sdk';
 import { PROTON_CHAIN } from '../constants/proton-chain.constant';
 import ProtonVIPLogo from '../../util/proton-logo-color.png';
 import firebaseService from './firebase.service';
-import Link, { LinkSession } from '@protonprotocol/proton-link';
+import Link, { LinkSession } from '@proton/link';
 import { User } from '../providers/AuthProvider';
 
 class ProtonSDK {
-  public chainId: any;
-  public endpoints: any;
-  public appName: any;
-  public requestAccount: any;
+  public chainId: string;
+  public endpoints: string[];
+  public appName: string;
+  public requestAccount: string;
   public session: LinkSession | null;
   public link?: Link | null;
   public user: User;
@@ -32,12 +32,11 @@ class ProtonSDK {
     };
   }
 
-  connect = async (restoreSession = false, showSelector = true) => {
+  connect = async () => {
     const { link, session } = await ConnectWallet({
       linkOptions: {
         chainId: this.chainId,
         endpoints: this.endpoints,
-        restoreSession,
       },
       transportOptions: {
         requestAccount: this.requestAccount,
@@ -46,7 +45,6 @@ class ProtonSDK {
       selectorOptions: {
         appName: this.appName,
         appLogo: ProtonVIPLogo,
-        showSelector,
       },
     });
     this.link = link;
@@ -118,7 +116,7 @@ class ProtonSDK {
     const savedUserAuth = JSON.parse(token);
     if (savedUserAuth) {
       try {
-        const session = await this.connect(true, false);
+        const session = await this.connect();
         if (session) {
           this.user = this._returnUserFromSession(this.session);
           return this.user;
