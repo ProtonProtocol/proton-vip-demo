@@ -5,6 +5,10 @@ import firebaseService from './firebase.service';
 import Link, { LinkSession } from '@proton/link';
 import { User } from '../providers/AuthProvider';
 
+interface Connect {
+  restoreSession: boolean;
+}
+
 class ProtonSDK {
   public chainId: string;
   public endpoints: string[];
@@ -32,11 +36,12 @@ class ProtonSDK {
     };
   }
 
-  connect = async () => {
+  connect = async ({ restoreSession }: Connect) => {
     const { link, session } = await ConnectWallet({
       linkOptions: {
         chainId: this.chainId,
         endpoints: this.endpoints,
+        restoreSession,
       },
       transportOptions: {
         requestAccount: this.requestAccount,
@@ -54,7 +59,7 @@ class ProtonSDK {
 
   login = async () => {
     try {
-      const session = await this.connect();
+      const session = await this.connect({ restoreSession: false });
       this.user = this._returnUserFromSession(session);
       return this.user;
     } catch (e) {
@@ -116,7 +121,7 @@ class ProtonSDK {
     const savedUserAuth = JSON.parse(token);
     if (savedUserAuth) {
       try {
-        const session = await this.connect();
+        const session = await this.connect({ restoreSession: true });
         if (session) {
           this.user = this._returnUserFromSession(this.session);
           return this.user;
