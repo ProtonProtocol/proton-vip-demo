@@ -1,8 +1,8 @@
 # ProtonVIP Demo
 
 This demo shows the practical usage and integration of the [Proton Web
-Sdk](https://www.npmjs.com/package/@protonprotocol/proton-web-sdk) with a simple
-web application.
+Sdk](https://www.npmjs.com/package/@proton/web-sdk) with a simple web
+application.
 
 Please note that this is not a real web application. The only portions of this
 app that work are the authentication and transactions with Proton Wallet. You
