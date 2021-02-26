@@ -17,6 +17,7 @@ class ProtonSDK {
   public session: LinkSession | null;
   public link?: Link | null;
   public user: User;
+  public error: string;
 
   constructor() {
     this.chainId = PROTON_CHAIN.chainId;
@@ -34,6 +35,7 @@ class ProtonSDK {
       isMember: false,
       memberLevel: '',
     };
+    this.error = ''
   }
 
   connect = async ({ restoreSession }: Connect) => {
@@ -63,8 +65,7 @@ class ProtonSDK {
       this.user = this._returnUserFromSession(session);
       return this.user;
     } catch (e) {
-      console.warn('Auth error', e);
-      return null;
+      return { error: e.message || "An error has occured while logging in"};
     }
   };
 
@@ -103,7 +104,7 @@ class ProtonSDK {
 
       return result;
     } catch (e) {
-      return e;
+      return { error: e.message || "An error has occured while sending a transaction"};
     }
   };
 
@@ -127,8 +128,7 @@ class ProtonSDK {
           return this.user;
         }
       } catch (e) {
-        console.warn('Session Restoration Error:', e);
-        return null;
+        return { error: e.message || "An error has occured while restoring a session"};
       }
     }
     return null;

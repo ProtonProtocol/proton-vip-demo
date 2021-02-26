@@ -77,6 +77,7 @@ export const timeout = (ms: number) =>
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState<User>(defaultCurrentUser);
+  const [err, setError] = useState('');
 
   useEffect(() => {
     const token: string = localStorage.getItem('AUTH_USER_PROTON_VIP') || '';
@@ -92,11 +93,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const authenticate = async (): Promise<AuthResponse> => {
-    try {
-      let user = await ProtonService.login();
+    // try {
+      let user, { error } = await ProtonService.login();
 
       if (!user) {
-        throw new Error();
+        setError("No user was found")
+        return { success: false };
+      }
+
+      if(error) {
+        setError(error);
+        return { success: false };
       }
 
       const query = await firebaseService
@@ -120,12 +127,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         success: true,
         user,
       };
-    } catch (err) {
-      console.warn('Login Error', err);
-      return {
-        success: false,
-      };
-    }
+    // } catch (err) {
+    //   console.warn('Login Error', err);
+    //   return {
+    //     success: false,
+    //   };
+    // }
   };
 
   const updateMember = async (user: User, level: string) => {
