@@ -56,7 +56,7 @@ export const defaultCurrentUser = {
 const authContext = createContext<AuthContext>({
   currentUser: defaultCurrentUser,
   authenticate: () => Promise.resolve(),
-  signout: () => { },
+  signout: () => {},
   signup: () => Promise.resolve(),
   error: '',
 });
@@ -78,12 +78,12 @@ export const useAuthContext = (): AuthContext => {
 export const timeout = (ms: number) =>
   new Promise((res) => setTimeout(res, ms));
 
-const usePrevious = (value: string) => {
+const usePrevious = (value: string): string => {
   const ref = useRef<string>();
   useEffect(() => {
     ref.current = value;
   }, [value]);
-  return ref.current;
+  return ref.current as string;
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -96,7 +96,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     if (prevError) {
       setError('');
     }
+  }, [prevError]);
 
+  useEffect(() => {
     const token: string = localStorage.getItem('AUTH_USER_PROTON_VIP') || '';
     if (token) {
       const initialUser = JSON.parse(token);
@@ -107,13 +109,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     document.addEventListener('backToSelector', () => {
       authenticate();
     });
-  }, [prevError]);
+  }, []);
 
   const authenticate = async (): Promise<User | void>=> {
     let { user, error } = await ProtonService.login();
 
     if (!user) {
-      setError("Error: No user was found");
+      setError('Error: No user was found');
       return;
     }
 
