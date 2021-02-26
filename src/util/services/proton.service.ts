@@ -63,7 +63,7 @@ class ProtonSDK {
     try {
       const session = await this.connect({ restoreSession: false });
       this.user = this._returnUserFromSession(session);
-      return this.user;
+      return { user: this.user };
     } catch (e) {
       return { error: e.message || "An error has occured while logging in"};
     }
@@ -102,7 +102,7 @@ class ProtonSDK {
         level,
       });
 
-      return result;
+      return { id: result.processed?.id };
     } catch (e) {
       return { error: e.message || "An error has occured while sending a transaction"};
     }
