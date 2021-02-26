@@ -29,7 +29,7 @@ interface AuthResponse {
 interface AuthContext {
   currentUser: User;
   error: string;
-  authenticate: () => Promise<AuthResponse>;
+  authenticate: () => Promise<User | void>;
   signup: (dataCost: number, dataId: string) => Promise<void>;
   signout: () => void;
 }
@@ -55,7 +55,7 @@ export const defaultCurrentUser = {
 
 const authContext = createContext<AuthContext>({
   currentUser: defaultCurrentUser,
-  authenticate: () => Promise.resolve({ success: false }),
+  authenticate: () => Promise.resolve(),
   signout: () => { },
   signup: () => Promise.resolve(),
   error: '',
@@ -91,7 +91,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User>(defaultCurrentUser);
   const [error, setError] = useState('');
 
-  const prevError = usePrevious( error );
+  const prevError = usePrevious(error);
   useEffect(() => {
     if (prevError) {
       setError('');
@@ -109,17 +109,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     });
   }, [prevError]);
 
-  const authenticate = async (): Promise<AuthResponse> => {
+  const authenticate = async (): Promise<User | void>=> {
     let { user, error } = await ProtonService.login();
 
     if (!user) {
-      setError("No user was found")
-      return { success: false };
+      setError("Error: No user was found");
+      return;
     }
 
     if (error) {
-      setError(error);
-      return { success: false };
+      setError(`Error: ${error}`);
+      return;
     }
 
     const query = await firebaseService
@@ -139,10 +139,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
     setCurrentUser(user);
 
-    return {
-      success: true,
-      user,
-    };
+    return user;
   };
 
   const updateMember = async (user: User, level: string) => {
@@ -159,23 +156,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signup = async (dataCost: number, dataId: string) => {
-    try {
-      let user = currentUser;
-      if (!user.actor) {
-        const result = await authenticate();
-        if (!result.success) throw new Error();
-        user = result.user;
-        await timeout(4000);
-      }
+    let user = currentUser;
+    if (!user.actor) {
+      const resultUser = await authenticate();
+      user = resultUser as User;
+      await timeout(4000);
+    }
 
-      const id = await ProtonService.sendTransaction(dataCost, dataId);
-      await updateMember(user, dataId);
-      if (!id) {
-        history.push('/');
-      }
-    } catch (err) {
-      console.warn('Transaction Error', err);
-      signout();
+    const id = await ProtonService.sendTransaction(dataCost, dataId);
+    await updateMember(user, dataId);
+    if (!id) {
+      history.push('/');
     }
   };
 
@@ -188,7 +179,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       error,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser]
+    [currentUser, error]
   );
 
   return (

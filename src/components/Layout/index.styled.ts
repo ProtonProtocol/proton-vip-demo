@@ -7,3 +7,10 @@ export const LayoutContainer = styled.div`
   background: #141414;
   height: 100%;
 `;
+
+export const Error = styled.h2`
+  color: white;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+`;
