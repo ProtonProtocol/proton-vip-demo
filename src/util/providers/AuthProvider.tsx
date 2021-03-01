@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
 } from 'react';
 import { useHistory } from 'react-router-dom';
 import ProtonService from '../services/proton.service';
@@ -27,7 +28,8 @@ interface AuthResponse {
 
 interface AuthContext {
   currentUser: User;
-  authenticate: () => Promise<AuthResponse>;
+  error: string;
+  authenticate: () => Promise<User | void>;
   signup: (dataCost: number, dataId: string) => Promise<void>;
   signout: () => void;
 }
@@ -53,13 +55,14 @@ export const defaultCurrentUser = {
 
 const authContext = createContext<AuthContext>({
   currentUser: defaultCurrentUser,
-  authenticate: () => Promise.resolve({ success: false }),
+  authenticate: () => Promise.resolve(),
   signout: () => {},
   signup: () => Promise.resolve(),
+  error: '',
 });
 
 export const useAuthContext = (): AuthContext => {
-  const { currentUser, authenticate, signout, signup } = useContext(
+  const { currentUser, authenticate, signout, signup, error } = useContext(
     authContext
   );
 
@@ -68,15 +71,32 @@ export const useAuthContext = (): AuthContext => {
     authenticate,
     signout,
     signup,
+    error,
   };
 };
 
 export const timeout = (ms: number) =>
   new Promise((res) => setTimeout(res, ms));
 
+const usePrevious = (value: string): string => {
+  const ref = useRef<string>();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current as string;
+}
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState<User>(defaultCurrentUser);
+  const [error, setError] = useState('');
+
+  const prevError = usePrevious(error);
+  useEffect(() => {
+    if (prevError) {
+      setError('');
+    }
+  }, [prevError]);
 
   useEffect(() => {
     const token: string = localStorage.getItem('AUTH_USER_PROTON_VIP') || '';
@@ -91,41 +111,37 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     });
   }, []);
 
-  const authenticate = async (): Promise<AuthResponse> => {
-    try {
-      let user = await ProtonService.login();
+  const authenticate = async (): Promise<User | void>=> {
+    let { user, error } = await ProtonService.login();
 
-      if (!user) {
-        throw new Error();
-      }
-
-      const query = await firebaseService
-        .collection('members')
-        .where('user', '==', user.actor)
-        .get();
-
-      if (!query.empty) {
-        let member: Member = { level: '', user: '' };
-        query.forEach((doc) => {
-          member = doc.data() as Member;
-        });
-        user.isMember = true;
-        user.memberLevel = member.level;
-      }
-
-      localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
-      setCurrentUser(user);
-
-      return {
-        success: true,
-        user,
-      };
-    } catch (err) {
-      console.warn('Login Error', err);
-      return {
-        success: false,
-      };
+    if (!user) {
+      setError('Error: No user was found');
+      return;
     }
+
+    if (error) {
+      setError(`Error: ${error}`);
+      return;
+    }
+
+    const query = await firebaseService
+      .collection('members')
+      .where('user', '==', user.actor)
+      .get();
+
+    if (!query.empty) {
+      let member: Member = { level: '', user: '' };
+      query.forEach((doc) => {
+        member = doc.data() as Member;
+      });
+      user.isMember = true;
+      user.memberLevel = member.level;
+    }
+
+    localStorage.setItem('AUTH_USER_PROTON_VIP', JSON.stringify(user));
+    setCurrentUser(user);
+
+    return user;
   };
 
   const updateMember = async (user: User, level: string) => {
@@ -142,23 +158,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signup = async (dataCost: number, dataId: string) => {
-    try {
-      let user = currentUser;
-      if (!user.actor) {
-        const result = await authenticate();
-        if (!result.success) throw new Error();
-        user = result.user;
-        await timeout(4000);
-      }
+    let user = currentUser;
+    if (!user.actor) {
+      const resultUser = await authenticate();
+      user = resultUser as User;
+      await timeout(4000);
+    }
 
-      const tx = await ProtonService.sendTransaction(dataCost, dataId);
-      await updateMember(user, dataId);
-      if (!tx.processed.id) {
-        history.push('/');
-      }
-    } catch (err) {
-      console.warn('Transaction Error', err);
-      signout();
+    const id = await ProtonService.sendTransaction(dataCost, dataId);
+    await updateMember(user, dataId);
+    if (!id) {
+      history.push('/');
     }
   };
 
@@ -168,9 +178,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       authenticate,
       signout,
       signup,
+      error,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser]
+    [currentUser, error]
   );
 
   return (
