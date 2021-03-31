@@ -128,7 +128,7 @@ class ProtonSDK {
           return this.user;
         }
       } catch (e) {
-        return { error: e.message || "An error has occured while restoring a session"};
+        return { error: e.message || "An error has occurred while restoring a session"};
       }
     }
     return null;
