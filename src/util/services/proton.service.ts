@@ -65,7 +65,7 @@ class ProtonSDK {
       this.user = this._returnUserFromSession(session);
       return { user: this.user };
     } catch (e) {
-      return { error: e.message || "An error has occured while logging in"};
+      return { error: e.message || "An error has occurred while logging in"};
     }
   };
 
@@ -104,7 +104,7 @@ class ProtonSDK {
 
       return { id: result.processed?.id };
     } catch (e) {
-      return { error: e.message || "An error has occured while sending a transaction"};
+      return { error: e.message || "An error has occurred while sending a transaction"};
     }
   };
 
@@ -136,7 +136,12 @@ class ProtonSDK {
 
   _returnUserFromSession = (session: any) => {
     const auth = session.auth;
-    const profile = session.accountData[0];
+    const profile = session.accountData ? session.accountData[0] : {
+      name: '',
+      acc: auth.actor,
+      avatar: '',
+    };
+
     const user = {
       actor: auth.actor,
       permission: auth.permission,
